@@ -1,19 +1,17 @@
 ﻿using Core.Models;
-using Data.DataAccess;
 using FirebaseAdmin.Auth;
 using Logic.User;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
+using Nest;
 
 namespace Core.Controllers
 {
     [ApiController]
-    [Route("api/[action]")]
-    public class UserController : BaseController
+    [Route("team/[action]")]
+    public class TeamController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult> GetTeam([FromBody] TokenFirebase tokenId)
+        public async Task<ActionResult> CreateTeam([FromBody] TokenFirebase tokenId)
         {
             try
             {
@@ -31,14 +29,7 @@ namespace Core.Controllers
                 else
                 {
                     var teams = logic.GetUserTeams(user);
-                    return Ok(Json(teams.Select(e=> new
-                    {
-                        e.TeamName,
-                        e.IsProTeam,
-                        e.SportType,
-                        e.Location,
-                        e.OrganizationName
-                    })));
+                    return Ok(Json(teams));
                 }
             }
             catch (FirebaseAuthException ex)
