@@ -37,11 +37,11 @@ namespace Core.Controllers
             // Iterate through all users. This will still retrieve users in batches,
             // buffering no more than 1000 users in memory at a time.
             var enumerator = FirebaseAuth.DefaultInstance.ListUsersAsync(null).GetAsyncEnumerator();
-            while (await enumerator.MoveNextAsync())
-            {
-                ExportedUserRecord user = enumerator.Current;
-                Console.WriteLine($"User: {user.Uid}, Email:{user.Email}, {user.DisplayName}, {user.PhotoUrl}");
-            }
+            //while (await enumerator.MoveNextAsync())
+            //{
+            //    ExportedUserRecord user = enumerator.Current;
+            //    Console.WriteLine($"User: {user.Uid}, Email:{user.Email}, {user.DisplayName}, {user.PhotoUrl}");
+            //}
 
         }
     }

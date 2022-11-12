@@ -12,27 +12,45 @@ namespace Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private UserContext userContext;
+        private readonly STMSContext userContext;
 
-        public UserRepository(UserContext userContext)
+        public UserRepository(STMSContext userContext)
         {
-            this.userContext = userContext; 
+            this.userContext = userContext;
         }
 
-        public void DeleteUser(Guid id)
+        public void DeleteUser(string email)
         {
-            User user = userContext.Users.Find(id);
-            userContext.Users.Remove(user);
+            User user = userContext.Users.Find(email);
+            if (user != null)
+            {
+                userContext.Users.Remove(user);
+            }
         }
 
-        public User GetUserById(Guid id)
+        public User GetUserByEmail(string? email)
         {
-            return userContext.Users.Where(e => e.UserId == id).FirstOrDefault();
+            return userContext.Users.Where(e => e.Email == email).FirstOrDefault();
         }
 
         public IEnumerable<User> GetUsers()
         {
             return userContext.Users.ToList();
+        }
+
+        public IEnumerable<Team> GetUserTeams(string email)
+        {
+            var userTeamsId = userContext.UsersTeams.Where(e => e.Email == email).ToList();
+            var userTeams = new List<Team>();
+            foreach(var tmp in userTeamsId)
+            {
+                var team = userContext.Teams.Where(e => e.TeamId == tmp.TeamId).FirstOrDefault();
+                if (team != null)
+                {
+                    userTeams.Add(team);
+                }
+            }
+            return userTeams;
         }
 
         public void InsertUser(User user)

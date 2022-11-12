@@ -6,14 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<UserContext>(options =>
+builder.Services.ConfigureSwaggerGen(setup =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("stsmDB"));
+    setup.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Sports Team Managment System - Sportly",
+        Version = "v1"
+    });
 });
+
+builder.Services.AddDbContext<STMSContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SMTScs"));
+});
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -21,9 +31,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseSwagger();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
 }
 

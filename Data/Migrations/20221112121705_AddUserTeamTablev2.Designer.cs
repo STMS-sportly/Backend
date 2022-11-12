@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(UserContext))]
-    [Migration("20221107233230_AddUserTeamTables")]
-    partial class AddUserTeamTables
+    [DbContext(typeof(STMSContext))]
+    [Migration("20221112121705_AddUserTeamTablev2")]
+    partial class AddUserTeamTablev2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,8 +30,8 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TeamAdmin")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TeamAdmin")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TeamName")
                         .IsRequired()
@@ -45,9 +45,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.User", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -69,6 +68,19 @@ namespace Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Data.Models.UserTeam", b =>
+                {
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TeamId", "UserId");
+
+                    b.ToTable("UsersTeams");
                 });
 #pragma warning restore 612, 618
         }

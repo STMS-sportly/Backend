@@ -10,10 +10,11 @@ namespace Data.Interfaces
     public interface IUserRepository : IDisposable
     {
         IEnumerable<User> GetUsers();
-        User GetUserById(Guid id);
+        User GetUserByEmail(string email);
         void InsertUser(User user);
-        void DeleteUser(Guid id);
+        void DeleteUser(string email);
         void UpdateUser(User user);
         void Save();
+        IEnumerable<Team> GetUserTeams(string email);
     }
 }

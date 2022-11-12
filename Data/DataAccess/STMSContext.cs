@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Data.DataAccess
 {
-    public class UserContext : DbContext
+    public class STMSContext : DbContext
     {
-        public UserContext(DbContextOptions options) : base(options) { }
+        public STMSContext(DbContextOptions options) : base(options) { }
 
         public DbSet<User>? Users { get; set; }
 
@@ -22,9 +22,9 @@ namespace Data.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserTeam>()
-            .HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
-        }
 
+            modelBuilder.Entity<UserTeam>()
+            .HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.Email));
+        }
     }
 }

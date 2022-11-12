@@ -9,7 +9,7 @@ namespace Data.Models
 {
     public class User
     {
-        [Required]
+        [Key]
         [MaxLength(254)]
         public string? Email { get; set; }
 
@@ -20,8 +20,6 @@ namespace Data.Models
         public string? PhoneNumber { get; set; }
 
         public string? PhotoUrl { get; set; }
-
-        public Guid UserId { get; set; }
 
     }
 
