@@ -9,6 +9,10 @@
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:SMTScs",
       "dynamicId": null
+    },
+    "apis1": {
+      "ignored": "True",
+      "type": "apis"
     }
   }
 }

@@ -19,12 +19,17 @@ namespace Data.DataAccess
 
         public DbSet<UserTeam>? UsersTeams { get; set; }
 
+        public DbSet<Log>? AppLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserTeam>()
             .HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.Email));
+
+            modelBuilder.Entity<Log>().Property(f => f.Id)
+            .ValueGeneratedOnAdd();
         }
     }
 }

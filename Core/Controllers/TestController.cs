@@ -1,8 +1,10 @@
 ﻿using Core.Models;
+using Data.Models;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
+using Logic.Logs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,32 +19,34 @@ namespace Core.Controllers
 
     [ApiController]
     [Route("api/[action]")]
-    public class TestController : ControllerBase
+    public class TestController : BaseController
     {
 
-        [HttpPost]
-        public async Task ListAllUsers()
+        [HttpGet]
+        public async Task<JsonResult> ListAllUsers()
         {
-            var pagedEnumerable = FirebaseAuth.DefaultInstance.ListUsersAsync(null);
-            var responses = pagedEnumerable.AsRawResponses().GetAsyncEnumerator();
-            while (await responses.MoveNextAsync())
+            try
             {
-                ExportedUserRecords response = responses.Current;
-                foreach (ExportedUserRecord user in response.Users)
+                var pagedEnumerable = FirebaseAuth.DefaultInstance.ListUsersAsync(null);
+                var responses = pagedEnumerable.AsRawResponses().GetAsyncEnumerator();
+                List<string> userId = new List<string>();
+                while (await responses.MoveNextAsync())
                 {
-                    Console.WriteLine($"User: {user.Uid}");
+                    ExportedUserRecords response = responses.Current;
+                    foreach (ExportedUserRecord user in response.Users)
+                    {
+                        Console.WriteLine($"User: {user.Uid}");
+                        userId.Add(user.Uid);
+                    }
                 }
+                return Json(userId);
             }
-
-            // Iterate through all users. This will still retrieve users in batches,
-            // buffering no more than 1000 users in memory at a time.
-            var enumerator = FirebaseAuth.DefaultInstance.ListUsersAsync(null).GetAsyncEnumerator();
-            //while (await enumerator.MoveNextAsync())
-            //{
-            //    ExportedUserRecord user = enumerator.Current;
-            //    Console.WriteLine($"User: {user.Uid}, Email:{user.Email}, {user.DisplayName}, {user.PhotoUrl}");
-            //}
-
+            catch(Exception ex)
+            {
+                var log = new LogsLogic(context);
+                log.AddLog(ex.Message);
+                return Json("ERROR");
+            }
         }
     }
 }

@@ -29,6 +29,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+} else
+{
+    app.UseHttpsRedirection();
 }
 
 app.UseSwagger();
@@ -38,19 +41,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 FirebaseApp.Create(new AppOptions()
 {
     Credential = GoogleCredential.FromFile(@"serviceAccount.json"),
 });
 
+//app.UseHttpsRedirection();
+//app.UseStaticFiles();
 
-app.UseDeveloperExceptionPage();
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
