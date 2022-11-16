@@ -5,6 +5,8 @@ namespace Core.Controllers
 {
     public class BaseController : Controller
     {
-        protected StmsContext? Context => HttpContext.RequestServices.GetService(typeof(StmsContext)) as StmsContext;
+#pragma warning disable CS8603 // Possible null reference return.
+        protected StmsContext Context => HttpContext.RequestServices.GetService(typeof(StmsContext)) as StmsContext;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 }

@@ -18,9 +18,6 @@ namespace Core.Controllers
                 FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(tokenId);
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
-                if (Context == null) { 
-                    return BadRequest("Problem With Context"); 
-                }
 
                 var logic = new TeamLogic(Context);
                 newTeam.Email = user.Email;
@@ -30,6 +27,8 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -42,13 +41,10 @@ namespace Core.Controllers
                 FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
-                if (Context == null)
-                {
-                    return BadRequest("Problem With Context");
-                }
 
                 var logic = new UserLogic(Context);
                 var userExists = logic.UserExist(user);
+
                 if (!userExists)
                 {
                     logic.AddUser(user);
@@ -64,6 +60,8 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
