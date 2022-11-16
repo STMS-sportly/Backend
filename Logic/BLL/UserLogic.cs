@@ -1,21 +1,15 @@
 ﻿using Data.DataAccess;
 using Data.Interfaces;
-using Data.Models;
 using Data.Repositories;
 using FirebaseAdmin.Auth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Model = Data.Models;
 
-namespace Logic.User
+namespace Logic.BLL
 {
     public class UserLogic
     {
         private readonly IUserRepository userRepo;
-        public UserLogic(STMSContext context)
+        public UserLogic(StmsContext context)
         {
             userRepo = new UserRepository(context);
         }
@@ -38,12 +32,6 @@ namespace Logic.User
         public void Save()
         {
             userRepo.Save();
-        }
-
-        public IEnumerable<Team> GetUserTeams(UserRecord user)
-        {
-            var team = userRepo.GetUserTeams(user.Email);
-            return team; 
         }
 
         public bool UserExist(UserRecord user)

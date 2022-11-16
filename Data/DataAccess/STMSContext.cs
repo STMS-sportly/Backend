@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Data.DataAccess
 {
-    public class STMSContext : DbContext
+    public class StmsContext : DbContext
     {
-        public STMSContext(DbContextOptions options) : base(options) { }
+        public StmsContext(DbContextOptions options) : base(options) { }
 
         public DbSet<User>? Users { get; set; }
 

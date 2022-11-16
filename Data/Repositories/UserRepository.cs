@@ -12,60 +12,41 @@ namespace Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly STMSContext userContext;
+        private readonly StmsContext userContext;
 
-        public UserRepository(STMSContext userContext)
+        public UserRepository(StmsContext userContext)
         {
             this.userContext = userContext;
         }
 
-        public void DeleteUser(string email)
-        {
-            User user = userContext.Users.Find(email);
-            if (user != null)
-            {
-                userContext.Users.Remove(user);
-            }
-        }
-
         public User GetUserByEmail(string? email)
         {
-            return userContext.Users.Where(e => e.Email == email).FirstOrDefault();
-        }
-
-        public IEnumerable<User> GetUsers()
-        {
-            return userContext.Users.ToList();
-        }
-
-        public IEnumerable<Team> GetUserTeams(string email)
-        {
-            var userTeamsId = userContext.UsersTeams.Where(e => e.Email == email).ToList();
-            var userTeams = new List<Team>();
-            foreach(var tmp in userTeamsId)
-            {
-                var team = userContext.Teams.Where(e => e.TeamId == tmp.TeamId).FirstOrDefault();
-                if (team != null)
-                {
-                    userTeams.Add(team);
-                }
-            }
-            return userTeams;
+            User? result = userContext.Users?.Where(e => e.Email == email).FirstOrDefault();
+            return result ?? new User();
         }
 
         public void InsertUser(User user)
         {
-            userContext.Users.Add(user);
+            userContext.Users?.Add(user);
         }
 
-        public void Save()
+        public void DeleteUser(string? email)
         {
-            userContext.SaveChanges();
+            User? user = userContext.Users?.Find(email);
+            if (user != null)
+            {
+                userContext.Users?.Remove(user);
+            }
         }
 
         public void UpdateUser(User user)
         {
             userContext.Entry(user).State = EntityState.Modified;
+        }
+
+        public void Save()
+        {
+            userContext.SaveChanges();
         }
 
         private bool disposed = false;

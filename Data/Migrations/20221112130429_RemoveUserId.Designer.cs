@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(STMSContext))]
+    [DbContext(typeof(StmsContext))]
     [Migration("20221112130429_RemoveUserId")]
     partial class RemoveUserId
     {

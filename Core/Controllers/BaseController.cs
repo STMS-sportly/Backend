@@ -5,6 +5,6 @@ namespace Core.Controllers
 {
     public class BaseController : Controller
     {
-        protected STMSContext context => HttpContext.RequestServices.GetService(typeof(STMSContext)) as STMSContext;
+        protected StmsContext? Context => HttpContext.RequestServices.GetService(typeof(StmsContext)) as StmsContext;
     }
 }

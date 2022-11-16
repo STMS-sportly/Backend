@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(STMSContext))]
+    [DbContext(typeof(StmsContext))]
     [Migration("20221112114652_AddUserTeamTable")]
     partial class AddUserTeamTable
     {

@@ -1,9 +1,7 @@
 using Data.DataAccess;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -18,7 +16,7 @@ builder.Services.ConfigureSwaggerGen(setup =>
     });
 });
 
-builder.Services.AddDbContext<STMSContext>(options =>
+builder.Services.AddDbContext<StmsContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SMTScs"));
 });
@@ -46,8 +44,8 @@ FirebaseApp.Create(new AppOptions()
     Credential = GoogleCredential.FromFile(@"serviceAccount.json"),
 });
 
-//app.UseHttpsRedirection();
-//app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 

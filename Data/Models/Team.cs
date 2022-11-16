@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Models
 {
@@ -14,19 +8,29 @@ namespace Data.Models
         [Key]
         public Guid TeamId { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("User"), DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required, MaxLength(50)]
         public string? TeamName { get; set; }
 
-        public bool IsProTeam { get; set; }
+        [Required, MaxLength(30)]
+        public TeamType TeamType { get; set; }
 
-        public string SportType { get; set; }
+        [Required, MaxLength(30)]
+        public string? SportType { get; set; }
 
-        public string Location { get; set; }
+        [Required, MaxLength(100)]
+        public string? Location { get; set; }
 
-        public string OrganizationName { get; set; }
+        [Required, MaxLength(100)]
+        public string? OrganizationName { get; set; }
     }
+
+    public enum TeamType
+    {
+        Amateur,
+        Professional
+    }
+
 }

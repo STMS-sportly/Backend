@@ -11,31 +11,43 @@ namespace Data.DataAccess
 {
     public class UnitOfWork : IDisposable
     {
-        private readonly STMSContext _userContext;
+        private readonly StmsContext _appContext;
 
-        public UnitOfWork(STMSContext userContext)
+        public UnitOfWork(StmsContext appContext)
         {
-            _userContext = userContext;
-            Users = new UserRepository(userContext);
+            _appContext = appContext;
+            Users = new UserRepository(_appContext);
+            Teams = new TeamRepository(_appContext);
         }
 
         public IUserRepository Users { get; set; }
+        public ITeamRepository Teams { get; set; }
 
         public int Complete()
         {
-            return _userContext.SaveChanges();
+            return _appContext.SaveChanges();
         }
 
         public async Task<int> CompleteAsync()
         {
-            return await _userContext.SaveChangesAsync();
+            return await _appContext.SaveChangesAsync();
         }
 
+        private bool disposed = false;
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed && disposing)
+            {
+                _appContext.Dispose();
+            }
+            this.disposed = true;
+        }
 
         public void Dispose()
         {
-            _userContext.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
