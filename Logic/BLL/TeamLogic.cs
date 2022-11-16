@@ -14,9 +14,14 @@ namespace Logic.BLL
             teamRepo = new TeamRepository(context);
         }
 
-        public void CreateTeam(Team newTeam, UserRecord user)
+        public void CreateTeam(Team newTeam)
         {
-            throw new NotImplementedException();
+            teamRepo.InsertTeam(newTeam);
+        }
+
+        public void Save()
+        {
+            teamRepo.Save();
         }
 
         public List<Team> GetUserTeams(UserRecord user)

@@ -17,6 +17,7 @@ namespace Data.Repositories
         public void InsertTeam(Team team)
         {
             teamContext.Teams?.Add(team);
+            teamContext.UsersTeams?.Add(new UserTeam { Email = team.Email, TeamId = team.TeamId  });
         }
 
         public IEnumerable<Team> GetUserTeams(string email)

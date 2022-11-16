@@ -37,5 +37,19 @@ namespace Core.Models
         public string? Location { get; set; }
 
         public string? OrganizationName { get; set; }
+
+        public Team GetNewTeam()
+        {
+            return new Team()
+            {
+                TeamId = Guid.NewGuid(),
+                Email = this.Email,
+                TeamName = this.TeamName,
+                TeamType = (TeamType)Enum.Parse(typeof(TeamType), this.TeamType ?? "Amateur"),
+                SportType = this.SportType,
+                Location = this.Location,
+                OrganizationName = this.OrganizationName
+            };
+        }
     }
 }

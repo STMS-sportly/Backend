@@ -11,7 +11,7 @@ namespace Core.Controllers
     public class TeamController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult> CreateTeam([FromHeader]string tokenId, Team newTeam)
+        public async Task<ActionResult> CreateTeam([FromHeader]string tokenId, TeamTO newTeam)
         {
             try
             {
@@ -21,8 +21,11 @@ namespace Core.Controllers
                 if (Context == null) { 
                     return BadRequest("Problem With Context"); 
                 }
+
                 var logic = new TeamLogic(Context);
-                logic.CreateTeam(newTeam, user);
+                newTeam.Email = user.Email;
+                logic.CreateTeam(newTeam.GetNewTeam());
+                logic.Save();
                 return Ok();
             }
             catch (FirebaseAuthException ex)
