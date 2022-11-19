@@ -1,4 +1,4 @@
-﻿using Core.Models;
+﻿using Core.DTOs;
 using Data.Models;
 using FirebaseAdmin.Auth;
 using Logic.BLL;
@@ -11,25 +11,30 @@ namespace Core.Controllers
     public class TeamController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult> CreateTeam([FromHeader]string tokenId, TeamTO newTeam)
+        public async Task<ActionResult> CreateTeam([FromHeader]string idToken, CreateTeamDTO newTeam)
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(tokenId);
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
 
                 var logic = new TeamLogic(Context);
-                newTeam.Email = user.Email;
-                logic.CreateTeam(newTeam.GetNewTeam());
-                logic.Save();
+                // logic.CreateTeam(newTeam.GetNewTeam(user.Email));
+                // logic.Save();
                 return Ok();
             }
             catch (FirebaseAuthException ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Source);
             }
         }
 
@@ -49,12 +54,28 @@ namespace Core.Controllers
                 {
                     logic.AddUser(user);
                     logic.Save();
-                    return Json(new List<TeamTO>());
+                    return Json(new List<GetTeamsDTO>());
                 }
                 else
                 {
                     var teamLogic = new TeamLogic(Context);
-                    Teams teams = new (teamLogic.GetUserTeams(user));
+                    var teams = teamLogic.GetUserTeams(user);
+                    List<GetTeamsDTO> teamsList = new List<GetTeamsDTO>();
+ 
+                    foreach(var team in teams)
+                    {
+                        teamsList.Add(new GetTeamsDTO()
+                        {
+                            Id = team.TeamId,
+                            TeamName = team.TeamName,
+                            Discipline = new DisciplineName()
+                            {
+                                Name = "" // TODO
+                            },
+                            IsAdmin = false, // TODO
+                            MembersCount = 0, // TODO
+                        });
+                    }
                     return Json(teams);
                 }
             }
@@ -62,8 +83,22 @@ namespace Core.Controllers
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(ex.Message);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetTeamDetails([FromHeader] string idToken, [FromHeader] Guid teamId)
+        {
+            // TODO
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDisciplines([FromHeader] string idToken, [FromHeader] Guid teamId)
+        {
+            // TODO
+            return Ok();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Logic.BLL
     public class TeamLogic
     {
         private readonly ITeamRepository teamRepo;
+
         public TeamLogic(StmsContext context)
         {
             teamRepo = new TeamRepository(context);

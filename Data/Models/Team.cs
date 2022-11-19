@@ -20,10 +20,10 @@ namespace Data.Models
         [Required, MaxLength(30)]
         public string? SportType { get; set; }
 
-        [Required, MaxLength(100)]
+        [MaxLength(100)]
         public string? Location { get; set; }
 
-        [Required, MaxLength(100)]
+        [MaxLength(100)]
         public string? OrganizationName { get; set; }
     }
 

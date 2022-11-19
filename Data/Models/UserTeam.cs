@@ -15,5 +15,7 @@ namespace Data.Models
 
         [Required, DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
+
+        public ICollection<User>? Users { get; set; }
     }
 }
