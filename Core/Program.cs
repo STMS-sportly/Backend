@@ -18,7 +18,7 @@ builder.Services.ConfigureSwaggerGen(setup =>
 
 builder.Services.AddDbContext<StmsContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SMTScs"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StmsCs"));
 });
 
 builder.Services.AddControllers();

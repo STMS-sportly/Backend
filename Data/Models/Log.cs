@@ -9,6 +9,7 @@ namespace Data.Models
 {
     public class Log
     {
+        [Key]
         public int Id { get; set; }
 
         [Required, DataType(DataType.MultilineText)]

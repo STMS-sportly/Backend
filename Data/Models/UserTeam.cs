@@ -10,12 +10,13 @@ namespace Data.Models
 {
     public class UserTeam
     {
+        [Key]
+        public int UserId { get; set; }
+
+        [ForeignKey("Team"), Required]
+        public int TeamId { get; set; }
+
         [Required]
-        public Guid TeamId { get; set; }
-
-        [Required, DataType(DataType.EmailAddress)]
-        public string? Email { get; set; }
-
-        public ICollection<User>? Users { get; set; }
+        public int UserType { get; set; }
     }
 }

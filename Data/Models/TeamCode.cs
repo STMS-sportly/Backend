@@ -10,7 +10,7 @@ namespace Data.Models
 {
     public class TeamCode
     {
-        [Key, Required, StringLength(6)]
+        [Key, StringLength(6)]
         public string? Code { get; set; }
 
         [ForeignKey("Team"), Required]
@@ -19,6 +19,5 @@ namespace Data.Models
         [Required, DataType(DataType.DateTime)]
         public DateTime ExpireDate { get; set; }
 
-        public ICollection<Team>? Teams { get; set; }
     }
 }

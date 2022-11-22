@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(StmsContext))]
-    [Migration("20221116013132_AddTeamCodeTable")]
-    partial class AddTeamCodeTable
+    [Migration("20221121235717_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,30 +47,23 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Team", b =>
                 {
-                    b.Property<Guid>("TeamId")
+                    b.Property<int>("TeamId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamId"));
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("OrganizationName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("SportType")
-                        .IsRequired()
+                    b.Property<int>("SportType")
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("TeamCodeCode")
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("int");
 
                     b.Property<string>("TeamName")
                         .IsRequired()
@@ -82,8 +75,6 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TeamId");
-
-                    b.HasIndex("TeamCodeCode");
 
                     b.ToTable("Teams");
                 });
@@ -107,16 +98,26 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.User", b =>
                 {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
+                    b.Property<string>("Location")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoUrl")
@@ -128,54 +129,28 @@ namespace Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<string>("UserTeamEmail")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("UserTeamTeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Email");
-
-                    b.HasIndex("UserTeamTeamId", "UserTeamEmail");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Data.Models.UserTeam", b =>
                 {
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.HasKey("TeamId", "Email");
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
 
                     b.ToTable("UsersTeams");
-                });
-
-            modelBuilder.Entity("Data.Models.Team", b =>
-                {
-                    b.HasOne("Data.Models.TeamCode", null)
-                        .WithMany("Teams")
-                        .HasForeignKey("TeamCodeCode");
-                });
-
-            modelBuilder.Entity("Data.Models.User", b =>
-                {
-                    b.HasOne("Data.Models.UserTeam", null)
-                        .WithMany("Users")
-                        .HasForeignKey("UserTeamTeamId", "UserTeamEmail");
-                });
-
-            modelBuilder.Entity("Data.Models.TeamCode", b =>
-                {
-                    b.Navigation("Teams");
-                });
-
-            modelBuilder.Entity("Data.Models.UserTeam", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

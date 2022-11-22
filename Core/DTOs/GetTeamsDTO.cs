@@ -5,7 +5,7 @@ namespace Core.DTOs
 {
     public class GetTeamsDTO
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string TeamName { get; set; }
 

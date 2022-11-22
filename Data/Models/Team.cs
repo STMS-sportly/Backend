@@ -6,31 +6,22 @@ namespace Data.Models
     public class Team
     {
         [Key]
-        public Guid TeamId { get; set; }
-
-        [ForeignKey("User"), DataType(DataType.EmailAddress)]
-        public string? Email { get; set; }
+        public int TeamId { get; set; }
 
         [Required, MaxLength(50)]
-        public string? TeamName { get; set; }
+        public string TeamName { get; set; }
 
         [Required, MaxLength(30)]
-        public TeamType TeamType { get; set; }
+        public int TeamType { get; set; }
 
         [Required, MaxLength(30)]
-        public string? SportType { get; set; }
+        public int SportType { get; set; }
 
         [MaxLength(100)]
         public string? Location { get; set; }
 
         [MaxLength(100)]
         public string? OrganizationName { get; set; }
-    }
-
-    public enum TeamType
-    {
-        Amateur,
-        Professional
     }
 
 }

@@ -3,16 +3,16 @@
     "secrets1": {
       "type": "secrets.user"
     },
-    "mssql1": {
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/stmsserv/databases/STMSdb",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:SMTScs",
-      "dynamicId": null
-    },
     "apis1": {
       "ignored": "True",
       "type": "apis"
+    },
+    "mssql1": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/stmsdbserver/databases/stmsDb",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:StmsCs",
+      "dynamicId": null
     }
   }
 }

@@ -15,7 +15,7 @@
     },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:SMTScs",
+      "connectionId": "ConnectionStrings:StmsCs",
       "dynamicId": null
     }
   }

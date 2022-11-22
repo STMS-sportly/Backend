@@ -2,7 +2,7 @@
 {
     public class GetTeamDetailsDTO
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public DisciplineName Discipline { get; set; }
         public bool IsAdmin { get; set; }

@@ -17,12 +17,14 @@ namespace Data.Repositories
         public void InsertTeam(Team team)
         {
             teamContext.Teams?.Add(team);
-            teamContext.UsersTeams?.Add(new UserTeam { Email = team.Email, TeamId = team.TeamId  });
+            var userId = teamContext.Users.Where(e => e.Email == e.Email).Select(e => e.UserId).FirstOrDefault();
+            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId  });
         }
 
         public IEnumerable<Team> GetUserTeams(string email)
         {
-            var userTeamsId = teamContext.UsersTeams?.Where(e => e.Email == email).ToList();
+            var userId = teamContext.Users.Where(e => e.Email == e.Email).Select(e => e.UserId).FirstOrDefault();
+            var userTeamsId = teamContext.UsersTeams?.Where(e => e.UserId == userId).ToList();
             var userTeams = new List<Team>();
             foreach (var tmp in userTeamsId ?? Enumerable.Empty<UserTeam>())
             {
@@ -36,14 +38,14 @@ namespace Data.Repositories
             return userTeams;
         }
 
-        public void Save()
-        {
-            teamContext.SaveChanges();
-        }
-
         public void UpdateTeam(Team team)
         {
             teamContext.Entry(team).State = EntityState.Modified;
+        }
+
+        public void Save()
+        {
+            teamContext.SaveChanges();
         }
 
         private bool disposed = false;

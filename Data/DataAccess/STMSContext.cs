@@ -13,22 +13,17 @@ namespace Data.DataAccess
     {
         public StmsContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<User>? Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<Team>? Teams { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
-        public DbSet<UserTeam>? UsersTeams { get; set; }
+        public DbSet<UserTeam> UsersTeams { get; set; }
 
         public DbSet<TeamCode> TeamCodes { get; set; }
 
-        public DbSet<Log>? AppLogs { get; set; }
+        public DbSet<Log> AppLogs { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        public DbSet<Event> Events { get; set; }
 
-            modelBuilder.Entity<UserTeam>()
-                .HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.Email));
-        }
     }
 }
