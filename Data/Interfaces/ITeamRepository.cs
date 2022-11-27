@@ -12,7 +12,7 @@ namespace Data.Interfaces
         void InsertTeam(Team team, string email);
         void UpdateTeam(Team team);
         void Save();
-        IEnumerable<Team> GetTeamDetails(int teamId);
-        List<Object> GetTeams(List<UserTeam> userTeamsId);
+        Team GetUserTeamById(int teamId);
+        int GetNumberOfTeamMembers(int teamId);
     }
 }

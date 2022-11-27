@@ -23,7 +23,7 @@ namespace Data.Repositories
             Save();
             var userId = teamContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
             Console.WriteLine(team.TeamId);
-            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId, UserType = team.TeamType });
+            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId, UserType = team.TeamType, JoinedDate = DateTime.UtcNow });
         }
 
         public List<object> GetTeams(List<UserTeam> userTeamsId)
@@ -41,27 +41,15 @@ namespace Data.Repositories
                         MembersCount = teamMembers
                     }).ToList<object>();
         }
-
-        public IEnumerable<Team> GetTeamDetails(string email)
+        
+        public Team GetUserTeamById(int teamId)
         {
-            var userId = teamContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
-            var userTeamsId = teamContext.UsersTeams?.Where(e => e.UserId == userId).ToList();
-            var userTeams = new List<Team>();
-            foreach (var tmp in userTeamsId ?? Enumerable.Empty<UserTeam>())
-            {
-                var team = teamContext.Teams?.Where(e => e.TeamId == tmp.TeamId).FirstOrDefault();
-                if (team != null)
-                {
-                    userTeams.Add(team);
-                }
-            }
-
-            return userTeams;
+            return teamContext.Teams.Where(e => e.TeamId == teamId).FirstOrDefault() ?? new Team();
         }
 
-        public IEnumerable<Team> GetTeamDetails(int teamId)
+        public int GetNumberOfTeamMembers(int teamId)
         {
-            throw new NotImplementedException();
+            return teamContext.UsersTeams.Where(e => e.TeamId == teamId).Count();
         }
 
         public void UpdateTeam(Team team)
@@ -90,5 +78,6 @@ namespace Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

@@ -23,5 +23,8 @@ namespace Data.Models
 
         [Required]
         public int UserType { get; set; }
+
+        [Required, DataType(DataType.DateTime)]
+        public DateTime JoinedDate { get; set; }
     }
 }

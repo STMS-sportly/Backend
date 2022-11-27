@@ -1,9 +1,10 @@
-﻿using Core.DTOs;
-using Data.Enums;
+﻿using Data.Enums;
 using Data.Models;
 using FirebaseAdmin.Auth;
+using Logic.ALL.DTOs;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Core.Controllers
 {
@@ -12,25 +13,15 @@ namespace Core.Controllers
     public class TeamController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult> CreateTeam([FromHeader]string idToken, CreateTeamDTO newTeam)
+        public async Task<ActionResult> CreateTeam([FromHeader] string idToken, CreateTeamDTO newTeam)
         {
             try
             {
                 FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
-
                 var logic = new TeamLogic(Context);
-                var team =  new Team()
-                {
-                    TeamName = newTeam.TeamName,
-                    TeamType = (int)(ETeamType)Enum.Parse(typeof(ETeamType), newTeam.TeamType),
-                    SportType = (int)(EDiscipline)Enum.Parse(typeof(EDiscipline), newTeam.Discipline.Name),
-                    Location = newTeam.Location,
-                    OrganizationName = newTeam.OrganizationName
-                };
-                logic.CreateTeam(user, team);
-                logic.Save();
+                logic.CreateTeam(user, newTeam);
                 return Ok();
             }
             catch (FirebaseAuthException ex)
@@ -48,7 +39,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetTeams([FromHeader] string idToken)
+        public async Task<List<GetTeamsDTO>?> GetTeams([FromHeader] string idToken)
         {
             try
             {
@@ -62,49 +53,66 @@ namespace Core.Controllers
                 if (!userExists)
                 {
                     logic.AddUser(user);
-                    return Json(new List<object>());
+                    return new List<GetTeamsDTO>();
                 }
                 else
                 {
                     var userTeamsId = logic.GetUsersTeams(user.Email);
                     var logicTeam = new TeamLogic(Context);
-                    var teamsData = logicTeam.GetTeams(userTeamsId);
-                    return Json(teamsData);
+                    var teams = logicTeam.GetTeams(userTeamsId);
+                    return teams;
                 }
             }
             catch (FirebaseAuthException ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return Unauthorized(ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return null;
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> GetTeamDetails([FromHeader] string idToken, [FromHeader] Guid teamId)
-        {
-            // TODO
-            return Ok();
-        }
-
         [HttpGet]
-        public async Task<ActionResult> GetDisciplines([FromHeader] string idToken)
+        public async Task<List<GetDesciplinesDTO>?> GetDisciplines([FromHeader] string idToken)
         {
             try
             {
                 await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-
-                List<object> allDisciplines = new List<object>();
-
+                List<GetDesciplinesDTO> allDisciplines = new List<GetDesciplinesDTO>();
                 foreach (var discipline in Enum.GetNames(typeof(EDiscipline)))
                 {
-                    allDisciplines.Add(new
+                    allDisciplines.Add(new GetDesciplinesDTO
                     {
                         Name = discipline
                     });
                 }
+                
+                return allDisciplines;
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return null;
+            }
+        }
 
-                return Json(allDisciplines);
+        [HttpPost]
+        public async Task<ActionResult> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var logicTeam = new TeamLogic(Context);
+                var teamsData = logicTeam.GetTeamDetails(user.Email, teamId);
+                return Json(teamsData);
             }
             catch (FirebaseAuthException ex)
             {
