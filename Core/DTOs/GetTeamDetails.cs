@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DisciplineName Discipline { get; set; }
+        public DisciplineDto Discipline { get; set; }
         public bool IsAdmin { get; set; }
         public int MembersCount { get; set; }
         public string? Location { get; set; }
@@ -13,9 +13,9 @@
         public Member[] Members { get; set; }
     }
 
-    public class DisciplineName
+    public class DisciplineDto
     {
-        public string Name { get; set; }
+        public dynamic Name { get; set; }
     }
 
     public class Member

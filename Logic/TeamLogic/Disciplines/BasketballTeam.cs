@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.TeamLogic.Disciplines
+﻿namespace Logic.TeamLogic.Disciplines
 {
-    public class BasketballTeam : IDiscipline
+    public class BasketballTeam : Discipline
     {
-        public string Name { get => "Basketball"; }
+        public new string Name { get => "Basketball"; }
     }
 }

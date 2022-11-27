@@ -9,9 +9,11 @@ namespace Core.DTOs
 
         public string TeamName { get; set; }
 
-        public DisciplineName Discipline { get; set; }
+        public DisciplineDto Discipline { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public string Type { get; set; }
+
+        public string Role { get; set; }
 
         public int MembersCount { get; set; }
     }

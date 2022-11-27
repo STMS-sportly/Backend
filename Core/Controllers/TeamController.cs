@@ -20,8 +20,8 @@ namespace Core.Controllers
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
 
                 var logic = new TeamLogic(Context);
-                // logic.CreateTeam(newTeam.GetNewTeam(user.Email));
-                // logic.Save();
+                //logic.CreateTeam(user, newTeam);
+                logic.Save();
                 return Ok();
             }
             catch (FirebaseAuthException ex)
@@ -48,35 +48,19 @@ namespace Core.Controllers
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
 
                 var logic = new UserLogic(Context);
-                var userExists = logic.UserExist(user);
 
+                var userExists = logic.UserExist(user);
                 if (!userExists)
                 {
                     logic.AddUser(user);
-                    logic.Save();
                     return Json(new List<GetTeamsDTO>());
                 }
                 else
                 {
-                    var teamLogic = new TeamLogic(Context);
-                    var teams = teamLogic.GetUserTeams(user);
-                    List<GetTeamsDTO> teamsList = new List<GetTeamsDTO>();
- 
-                    foreach(var team in teams)
-                    {
-                        teamsList.Add(new GetTeamsDTO()
-                        {
-                            Id = team.TeamId,
-                            TeamName = team.TeamName,
-                            Discipline = new DisciplineName()
-                            {
-                                Name = "" // TODO
-                            },
-                            IsAdmin = false, // TODO
-                            MembersCount = 0, // TODO
-                        });
-                    }
-                    return Json(teams);
+                    var userTeamsId = logic.GetUsersTeams(user.Email);
+                    var logicTeam = new TeamLogic(Context);
+                    var teamsData = logicTeam.GetTeams(userTeamsId);
+                    return Json(teamsData);
                 }
             }
             catch (FirebaseAuthException ex)

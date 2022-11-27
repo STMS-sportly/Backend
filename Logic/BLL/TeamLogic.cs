@@ -20,14 +20,16 @@ namespace Logic.BLL
             teamRepo.InsertTeam(newTeam);
         }
 
+        public List<object> GetTeams(List<UserTeam> userTeamsId)
+        {
+            return teamRepo.GetTeams(userTeamsId);
+        }
+
         public void Save()
         {
             teamRepo.Save();
         }
 
-        public List<Team> GetUserTeams(UserRecord user)
-        {
-            return teamRepo.GetUserTeams(user.Email).ToList();
-        }
+
     }
 }

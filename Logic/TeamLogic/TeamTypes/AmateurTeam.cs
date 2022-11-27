@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.TeamLogic.TeamTypes
+﻿namespace Logic.TeamLogic.TeamTypes
 {
-    public class AmateurTeam
+    public class AmateurTeam : Team
     {
-        public string Type => "Amateur";
+        public new string Type => "Amateur";
     }
 }

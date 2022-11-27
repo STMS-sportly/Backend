@@ -1,7 +1,10 @@
 ﻿using Data.DataAccess;
+using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Linq;
 
 namespace Data.Repositories
 {
@@ -16,14 +19,30 @@ namespace Data.Repositories
 
         public void InsertTeam(Team team)
         {
-            teamContext.Teams?.Add(team);
-            var userId = teamContext.Users.Where(e => e.Email == e.Email).Select(e => e.UserId).FirstOrDefault();
-            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId  });
+            teamContext.Teams.Add(team);
+            var userId = teamContext.Users.Where(e => e.Email == null).Select(e => e.UserId).FirstOrDefault();
+            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId });
         }
 
-        public IEnumerable<Team> GetUserTeams(string email)
+        public List<object> GetTeams(List<UserTeam> userTeamsId)
         {
-            var userId = teamContext.Users.Where(e => e.Email == e.Email).Select(e => e.UserId).FirstOrDefault();
+            return (from userTeam in userTeamsId
+                    let tmp = teamContext.Teams.Where(e => e.TeamId == userTeam.TeamId).FirstOrDefault()
+                    let teamMembers = teamContext.UsersTeams.Where(e => e.TeamId == userTeam.TeamId).Count()
+                    where tmp != null
+                    select new
+                    {
+                        TeamId = tmp.TeamId,
+                        TeamName = tmp.TeamName,
+                        Discipline = new { Name = (EDiscipline)tmp.SportType },
+                        Type = (ETeam)tmp.TeamType,
+                        MembersCount = teamMembers
+                    }).ToList<object>();
+        }
+
+        public IEnumerable<Team> GetTeamDetails(string email)
+        {
+            var userId = teamContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
             var userTeamsId = teamContext.UsersTeams?.Where(e => e.UserId == userId).ToList();
             var userTeams = new List<Team>();
             foreach (var tmp in userTeamsId ?? Enumerable.Empty<UserTeam>())
@@ -36,6 +55,11 @@ namespace Data.Repositories
             }
 
             return userTeams;
+        }
+
+        public IEnumerable<Team> GetTeamDetails(int teamId)
+        {
+            throw new NotImplementedException();
         }
 
         public void UpdateTeam(Team team)

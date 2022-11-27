@@ -1,14 +1,7 @@
-﻿using Logic.TeamLogic.Disciplines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.TeamLogic.Disciplines
+﻿namespace Logic.TeamLogic.TeamTypes
 {
-    public class ProfessionalTeam : ITeamType
+    public class ProfessionalTeam : Team
     {
-        public string Type => "Professional";
+        public new string Type => "Professional";
     }
 }

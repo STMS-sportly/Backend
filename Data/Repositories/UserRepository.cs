@@ -19,20 +19,32 @@ namespace Data.Repositories
             this.userContext = userContext;
         }
 
-        public User GetUserByEmail(string? email)
+        public User GetUserByEmail(string email)
         {
-            User? result = userContext.Users?.Where(e => e.Email == email).FirstOrDefault();
-            return result ?? new User();
+            return userContext.Users.Where(e => e.Email == email).FirstOrDefault() ?? new User();
+        }
+
+        public List<UserTeam> GetUsersTeams(string email)
+        {
+            int userId = userContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
+
+            return userContext.UsersTeams.Where(e => e.UserId == userId).Select(e => new UserTeam(){ TeamId = e.TeamId, UserType = e.UserType }).ToList() ?? new List<UserTeam>();
+        }
+
+        public bool UserExists(string email)
+        {
+            var user = userContext.Users.Where(e => e.Email == email).FirstOrDefault();
+            return user != null;
         }
 
         public void InsertUser(User user)
         {
-            userContext.Users?.Add(user);
+            userContext.Users.Add(user);
         }
 
-        public void DeleteUser(string? email)
+        public void DeleteUser(string email)
         {
-            User? user = userContext.Users?.Find(email);
+            User? user = userContext.Users.Where(e =>e.Email == email).FirstOrDefault();
             if (user != null)
             {
                 userContext.Users?.Remove(user);

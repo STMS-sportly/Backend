@@ -1,5 +1,6 @@
 ﻿using Data.DataAccess;
 using Data.Interfaces;
+using Data.Models;
 using Data.Repositories;
 using FirebaseAdmin.Auth;
 using Model = Data.Models;
@@ -27,6 +28,7 @@ namespace Logic.BLL
             };
 
             userRepo.InsertUser(newUser);
+            Save();
         }
 
         public void Save()
@@ -34,9 +36,14 @@ namespace Logic.BLL
             userRepo.Save();
         }
 
+        public List<UserTeam> GetUsersTeams(string email)
+        {
+            return userRepo.GetUsersTeams(email) ?? new List<UserTeam>();
+        }
+
         public bool UserExist(UserRecord user)
         {
-            return userRepo.GetUserByEmail(user.Email) != null;
+            return userRepo.UserExists(user.Email);
         }
     }
 }
