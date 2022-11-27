@@ -8,6 +8,8 @@ namespace Data.Enums
 {
     public enum EUserType
     {
+        Admin,
+        ProAdmin,
         Player,
         ProPlayer,
         Assistant

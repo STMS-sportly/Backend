@@ -3,8 +3,6 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System.Linq;
 
 namespace Data.Repositories
 {
@@ -52,6 +50,32 @@ namespace Data.Repositories
             return teamContext.UsersTeams.Where(e => e.TeamId == teamId).Count();
         }
 
+        public UserTeam GetUserTeam(string email, int teamId)
+        {
+            var user = teamContext.Users.Where(e => e.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return new UserTeam() { TeamId = -1};
+            }
+            return teamContext.UsersTeams.Where(e => e.UserId == user.UserId).FirstOrDefault() ?? new UserTeam();
+        }
+
+        public List<User> GetMembers(int teamId)
+        {
+            var userTeam = teamContext.UsersTeams.Where(e => e.TeamId == teamId).ToList();
+            var res = new List<User>();
+            foreach(var user in userTeam)
+            {
+                var newUser = teamContext.Users.Where(e => e.UserId == user.UserId).FirstOrDefault() ?? new User() { UserId = -1};
+                if (newUser.UserId != -1)
+                {
+                    res.Add(newUser);
+                }
+            }
+
+            return res;
+        }
+
         public void UpdateTeam(Team team)
         {
             teamContext.Entry(team).State = EntityState.Modified;
@@ -79,5 +103,9 @@ namespace Data.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public bool IsAdmin(int userType)
+        {
+            return (userType == 0 || userType == 1);
+        }
     }
 }

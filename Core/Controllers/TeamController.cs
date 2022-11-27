@@ -102,8 +102,8 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
+        [HttpGet]
+        public async Task<GetTeamDetailsDTO?> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
         {
             try
             {
@@ -112,13 +112,13 @@ namespace Core.Controllers
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
                 var logicTeam = new TeamLogic(Context);
                 var teamsData = logicTeam.GetTeamDetails(user.Email, teamId);
-                return Json(teamsData);
+                return teamsData;
             }
             catch (FirebaseAuthException ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return Unauthorized(ex.Message);
+                return null;
             }
         }
     }

@@ -43,7 +43,7 @@ namespace Logic.BLL
                     TeamName = team.TeamName,
                     Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType) },
                     Type = Enum.GetName(typeof(ETeamType), team.TeamType),
-                    Role = Enum.GetName(typeof(EAdminType), id.UserType),
+                    Role = Enum.GetName(typeof(EUserType), id.UserType),
                     MembersCount = teamRepo.GetNumberOfTeamMembers(id.TeamId)
                 });
             }
@@ -51,10 +51,43 @@ namespace Logic.BLL
             return res;
         }
 
-        // TeamDetails
-        public object GetTeamDetails(string email, int teamId)
+        public GetTeamDetailsDTO GetTeamDetails(string email, int teamId)
         {
-            return teamRepo.GetNumberOfTeamMembers(teamId);
+            var team = teamRepo.GetUserTeamById(teamId);
+            var userTeam = teamRepo.GetUserTeam(email, teamId);
+            if (userTeam.UserId == -1)
+            {
+                return new GetTeamDetailsDTO();
+            }
+
+            var members = teamRepo.GetMembers(teamId);
+            List<Member> finalMembers = new List<Member>();
+            foreach(var member  in members)
+            {
+                finalMembers.Add(
+                    new Member()
+                    {
+                        Id = 1,
+                        FirstName = "",
+                        LastName = "",
+                        IsAdmin = false
+                    });
+            }
+
+            var res = new GetTeamDetailsDTO()
+            {
+                Id = team.TeamId,
+                Name = team.TeamName,
+                Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType)},
+                IsAdmin = teamRepo.IsAdmin(userTeam.UserType),
+                MembersCount = teamRepo.GetNumberOfTeamMembers(team.TeamId),
+                Location = team.Location,
+                OrganizationName = team.OrganizationName,
+                JoinedDate = userTeam.JoinedDate,
+                Members = finalMembers.ToArray()
+            };
+
+            return res;
         }
 
         public void Save()
