@@ -36,8 +36,8 @@ namespace Data.Repositories
                     {
                         TeamId = tmp.TeamId,
                         TeamName = tmp.TeamName,
-                        Discipline = new { Name = (EDiscipline)tmp.SportType },
-                        Type = (ETeamType)tmp.TeamType,
+                        Discipline = new { Name = Enum.GetName(typeof(EDiscipline), tmp.SportType) },
+                        Type =  Enum.GetName(typeof(ETeamType), tmp.TeamType),
                         MembersCount = teamMembers
                     }).ToList<object>();
         }
