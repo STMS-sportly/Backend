@@ -88,10 +88,30 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetDisciplines([FromHeader] string idToken, [FromHeader] Guid teamId)
+        public async Task<ActionResult> GetDisciplines([FromHeader] string idToken)
         {
-            // TODO
-            return Ok();
+            try
+            {
+                await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+
+                List<object> allDisciplines = new List<object>();
+
+                foreach (var discipline in Enum.GetNames(typeof(EDiscipline)))
+                {
+                    allDisciplines.Add(new
+                    {
+                        Name = discipline
+                    });
+                }
+
+                return Json(allDisciplines);
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return Unauthorized(ex.Message);
+            }
         }
     }
 }
