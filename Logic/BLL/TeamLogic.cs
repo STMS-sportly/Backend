@@ -64,13 +64,14 @@ namespace Logic.BLL
             List<Member> finalMembers = new List<Member>();
             foreach(var member  in members)
             {
+                var memberStatus = teamRepo.GetUserTeam(member.Email, teamId);
                 finalMembers.Add(
                     new Member()
                     {
-                        Id = 1,
-                        FirstName = "",
-                        LastName = "",
-                        IsAdmin = false
+                        Id = member.UserId,
+                        FirstName = member.Firstname,
+                        LastName = member.Surname,
+                        IsAdmin = teamRepo.IsAdmin(memberStatus.UserType)
                     });
             }
 
