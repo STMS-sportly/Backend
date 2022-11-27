@@ -13,7 +13,7 @@ namespace Logic.TeamLogic.TeamTypes
 
         public int getTeamTypeId()
         {
-            var disciplineId = (ETeam)Enum.Parse(typeof(ETeam), this.Type);
+            var disciplineId = (ETeamType)Enum.Parse(typeof(ETeamType), this.Type);
             return (int)disciplineId;
         }
     }

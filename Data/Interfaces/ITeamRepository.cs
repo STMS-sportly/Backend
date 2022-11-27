@@ -9,7 +9,7 @@ namespace Data.Interfaces
 {
     public interface ITeamRepository : IDisposable
     {
-        void InsertTeam(Team team);
+        void InsertTeam(Team team, string email);
         void UpdateTeam(Team team);
         void Save();
         IEnumerable<Team> GetTeamDetails(int teamId);

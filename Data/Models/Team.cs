@@ -21,6 +21,7 @@ namespace Data.Models
 
         [MaxLength(100)]
         public string? OrganizationName { get; set; }
+
     }
 
 }

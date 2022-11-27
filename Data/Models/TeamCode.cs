@@ -13,8 +13,11 @@ namespace Data.Models
         [Key, StringLength(6)]
         public string? Code { get; set; }
 
-        [ForeignKey("Team"), Required]
-        public Guid TeamId { get; set; }
+        [Required]
+        public int TeamId { get; set; }
+
+        [ForeignKey("TeamId")]
+        public Team Team { get; set; }
 
         [Required, DataType(DataType.DateTime)]
         public DateTime ExpireDate { get; set; }

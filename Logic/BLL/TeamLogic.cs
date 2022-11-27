@@ -15,9 +15,9 @@ namespace Logic.BLL
             teamRepo = new TeamRepository(context);
         }
 
-        public void CreateTeam(Team newTeam)
+        public void CreateTeam(UserRecord user, Team newTeam)
         {
-            teamRepo.InsertTeam(newTeam);
+            teamRepo.InsertTeam(newTeam, user.Email);
         }
 
         public List<object> GetTeams(List<UserTeam> userTeamsId)

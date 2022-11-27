@@ -1,4 +1,5 @@
 ﻿using Core.DTOs;
+using Data.Enums;
 using Data.Models;
 using FirebaseAdmin.Auth;
 using Logic.BLL;
@@ -20,7 +21,15 @@ namespace Core.Controllers
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
 
                 var logic = new TeamLogic(Context);
-                //logic.CreateTeam(user, newTeam);
+                var team =  new Team()
+                {
+                    TeamName = newTeam.TeamName,
+                    TeamType = (int)(ETeamType)Enum.Parse(typeof(ETeamType), newTeam.TeamType),
+                    SportType = (int)(EDiscipline)Enum.Parse(typeof(EDiscipline), newTeam.Discipline.Name),
+                    Location = newTeam.Location,
+                    OrganizationName = newTeam.OrganizationName
+                };
+                logic.CreateTeam(user, team);
                 logic.Save();
                 return Ok();
             }
@@ -53,7 +62,7 @@ namespace Core.Controllers
                 if (!userExists)
                 {
                     logic.AddUser(user);
-                    return Json(new List<GetTeamsDTO>());
+                    return Json(new List<object>());
                 }
                 else
                 {

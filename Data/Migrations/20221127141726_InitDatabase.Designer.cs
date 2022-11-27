@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(StmsContext))]
-    [Migration("20221122000012_AddEventsTable")]
-    partial class AddEventsTable
+    [Migration("20221127141726_InitDatabase")]
+    partial class InitDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,10 +123,12 @@ namespace Data.Migrations
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.HasKey("Code");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("TeamCodes");
                 });
@@ -171,21 +173,50 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.UserTeam", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<int>("TeamId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserType")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId");
+                    b.HasKey("TeamId", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UsersTeams");
+                });
+
+            modelBuilder.Entity("Data.Models.TeamCode", b =>
+                {
+                    b.HasOne("Data.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("Data.Models.UserTeam", b =>
+                {
+                    b.HasOne("Data.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

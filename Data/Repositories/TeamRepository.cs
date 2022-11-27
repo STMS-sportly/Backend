@@ -17,11 +17,13 @@ namespace Data.Repositories
             this.teamContext = teamContext;
         }
 
-        public void InsertTeam(Team team)
+        public void InsertTeam(Team team, string email)
         {
             teamContext.Teams.Add(team);
-            var userId = teamContext.Users.Where(e => e.Email == null).Select(e => e.UserId).FirstOrDefault();
-            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId });
+            Save();
+            var userId = teamContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
+            Console.WriteLine(team.TeamId);
+            teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId, UserType = team.TeamType });
         }
 
         public List<object> GetTeams(List<UserTeam> userTeamsId)
@@ -35,7 +37,7 @@ namespace Data.Repositories
                         TeamId = tmp.TeamId,
                         TeamName = tmp.TeamName,
                         Discipline = new { Name = (EDiscipline)tmp.SportType },
-                        Type = (ETeam)tmp.TeamType,
+                        Type = (ETeamType)tmp.TeamType,
                         MembersCount = teamMembers
                     }).ToList<object>();
         }

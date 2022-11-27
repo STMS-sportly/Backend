@@ -10,11 +10,16 @@ namespace Data.Models
 {
     public class UserTeam
     {
-        [Key]
+        [Required]
         public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
 
-        [ForeignKey("Team"), Required]
+        [Required]
         public int TeamId { get; set; }
+
+        [ForeignKey("TeamId")]
+        public virtual Team Team { get; set; }
 
         [Required]
         public int UserType { get; set; }

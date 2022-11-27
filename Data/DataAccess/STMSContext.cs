@@ -25,5 +25,11 @@ namespace Data.DataAccess
 
         public DbSet<Event> Events { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserTeam>().HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
+        }
+
     }
 }

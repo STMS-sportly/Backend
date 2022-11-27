@@ -1,8 +1,8 @@
 ﻿namespace Data.Enums
 {
-    public enum ETeam
+    public enum ETeamType
     {
-        AmateurTeam,
+        Amateur,
         Professional
     }
 }
