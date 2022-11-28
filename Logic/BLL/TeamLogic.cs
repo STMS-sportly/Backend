@@ -5,6 +5,7 @@ using Data.Models;
 using Data.Repositories;
 using FirebaseAdmin.Auth;
 using Logic.ALL.DTOs;
+using System.Diagnostics.Metrics;
 
 namespace Logic.BLL
 {
@@ -71,16 +72,17 @@ namespace Logic.BLL
                         Id = member.UserId,
                         FirstName = member.Firstname,
                         LastName = member.Surname,
-                        IsAdmin = teamRepo.IsAdmin(memberStatus.UserType)
+                        Role = Enum.GetName(typeof(EUserType), memberStatus.UserType),
                     });
             }
-
+            var user = teamRepo.GetUserTeam(email, teamId);
             var res = new GetTeamDetailsDTO()
             {
                 Id = team.TeamId,
                 Name = team.TeamName,
                 Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType)},
-                IsAdmin = teamRepo.IsAdmin(userTeam.UserType),
+                teamType = Enum.GetName(typeof(ETeamType), team.TeamType),
+                Role = Enum.GetName(typeof(EUserType), user.UserTypeS),
                 MembersCount = teamRepo.GetNumberOfTeamMembers(team.TeamId),
                 Location = team.Location,
                 OrganizationName = team.OrganizationName,
