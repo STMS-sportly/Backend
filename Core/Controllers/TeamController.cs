@@ -102,7 +102,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{teamId}")]
         public async Task<ActionResult?> GetTeamDetails([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
@@ -122,7 +122,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{teamId}")]
         public async Task<GetTeamCodeDTO?> GetTeamCode([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
@@ -141,7 +141,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("{codeTeam}")]
         public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromRoute] string codeTeam)
         {
             try
@@ -167,7 +167,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPost("{teamId}")]
+        [HttpDelete("{teamId}")]
         public async Task<IActionResult> DeleteTeam([FromHeader] string idToken, [FromRoute]int teamId)
         {
             try
