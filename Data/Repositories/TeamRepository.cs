@@ -179,5 +179,25 @@ namespace Data.Repositories
             Save();
             return true;
         }
+
+        public void DeleteTeam(int teamId)
+        {
+            var teamCode = teamContext.TeamCodes.Where(e => e.TeamId == teamId).FirstOrDefault();
+            if (teamCode != null)
+            {
+                teamContext.TeamCodes.Remove(teamCode);
+            }
+            Save();
+            var userTeamsToDelete = teamContext.UsersTeams.Where(e => e.TeamId == teamId).ToArray();
+            teamContext.UsersTeams.RemoveRange(userTeamsToDelete);
+            Save();
+            var team = teamContext.Teams.Where(e => e.TeamId == teamId).FirstOrDefault();
+            if (team != null)
+            {
+                teamContext.Teams.Remove(team);
+            }
+            Save();
+
+        }
     }
 }

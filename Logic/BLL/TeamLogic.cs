@@ -106,5 +106,10 @@ namespace Logic.BLL
         {
             return teamRepo.JoinTeam(email, codeTeam);
         }
+
+        public void DeleteTeam(int teamId)
+        {
+            teamRepo.DeleteTeam(teamId);
+        }
     }
 }

@@ -53,7 +53,7 @@ namespace Core.Controllers
                 if (!userExists)
                 {
                     logic.AddUser(user);
-                    return  Json(new { Teams = new List<GetTeamsDTO>()});
+                    return Json(new { Teams = new List<GetTeamsDTO>() });
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace Core.Controllers
                         Name = discipline
                     });
                 }
-                
+
                 return Json(new { disciplines = allDisciplines });
             }
             catch (FirebaseAuthException ex)
@@ -103,7 +103,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult?> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
+        public async Task<ActionResult?> GetTeamDetails([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<GetTeamCodeDTO?> GetTeamCode([FromHeader] string idToken, [FromHeader] int teamId)
+        public async Task<GetTeamCodeDTO?> GetTeamCode([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace Core.Controllers
                 var teamLogic = new TeamLogic(Context);
                 string code = teamLogic.GetTeamCode(teamId);
 
-                return new GetTeamCodeDTO() { Code = code};
+                return new GetTeamCodeDTO() { Code = code };
             }
             catch (FirebaseAuthException ex)
             {
@@ -142,7 +142,7 @@ namespace Core.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromHeader]string codeTeam)
+        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromRoute] string codeTeam)
         {
             try
             {
@@ -164,6 +164,30 @@ namespace Core.Controllers
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
                 return null;
+            }
+        }
+
+        [HttpPost("{teamId}")]
+        public async Task<IActionResult> DeleteTeam([FromHeader] string idToken, [FromRoute]int teamId)
+        {
+            try
+            {
+                await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                var teamLogic = new TeamLogic(Context);
+                teamLogic.DeleteTeam(teamId);
+                return Ok();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest();
+            }
+            catch(Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest();
             }
         }
 

@@ -19,5 +19,6 @@ namespace Data.Interfaces
         List<User> GetMembers(int teamId);
         TeamCode GetTeamCode(int teamId);
         bool JoinTeam(string email, string codeTeam);
+        void DeleteTeam(int teamId);
     }
 }
