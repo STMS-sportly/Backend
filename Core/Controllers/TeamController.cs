@@ -141,8 +141,8 @@ namespace Core.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, string codeTeam)
+        [HttpPost]
+        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromHeader]string codeTeam)
         {
             try
             {
