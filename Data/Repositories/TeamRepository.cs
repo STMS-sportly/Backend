@@ -3,6 +3,7 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.SymbolStore;
 
 namespace Data.Repositories
 {
@@ -106,6 +107,47 @@ namespace Data.Repositories
         public bool IsAdmin(int userType)
         {
             return (userType == 0 || userType == 1);
+        }
+
+        public TeamCode GetTeamCode(int teamId)
+        {
+            var code = teamContext.TeamCodes.Where(e => e.TeamId == teamId).FirstOrDefault();
+            var codes = teamContext.TeamCodes.Select(e => e.Code).ToList();
+            if (code == null || DateTime.Compare(code.ExpireDate, DateTime.UtcNow) < 0)
+            {
+                if (code != null)
+                {
+                    teamContext.TeamCodes.Remove(code);
+                    Save();
+                }
+
+                bool codeExists;
+                string newCode = "000000";
+                do 
+                {
+                    codeExists = false;
+                    Random r = new Random();
+                    newCode = (r.Next(100_000, 999_999)).ToString();
+
+                    if (codes.Contains(newCode))
+                    {
+                        codeExists = true;
+                    }
+
+                } while (codeExists);
+
+                code = new TeamCode()
+                {
+                    Code = newCode,
+                    TeamId = teamId,
+                    ExpireDate = DateTime.UtcNow.AddDays(2)
+                };
+
+                teamContext.TeamCodes.Update(code);
+                Save();
+            }
+
+            return code;
         }
     }
 }

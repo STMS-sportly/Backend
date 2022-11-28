@@ -121,5 +121,24 @@ namespace Core.Controllers
                 return null;
             }
         }
+
+        [HttpGet]
+        public async Task<GetTeamCodeDTO?> GetTeamCode([FromHeader] string idToken, [FromHeader] int teamId)
+        {
+            try
+            {
+                await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                var teamLogic = new TeamLogic(Context);
+                string code = teamLogic.GetTeamCode(teamId);
+
+                return new GetTeamCodeDTO() { Code = code};
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return null;
+            }
+        }
     }
 }

@@ -96,6 +96,10 @@ namespace Logic.BLL
             teamRepo.Save();
         }
 
-
+        public string GetTeamCode(int teamId)
+        {
+            var code = teamRepo.GetTeamCode(teamId);
+            return code.Code;
+        }
     }
 }
