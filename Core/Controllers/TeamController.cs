@@ -39,7 +39,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetTeamsDTO>?> GetTeams([FromHeader] string idToken)
+        public async Task<ActionResult?> GetTeams([FromHeader] string idToken)
         {
             try
             {
@@ -53,14 +53,14 @@ namespace Core.Controllers
                 if (!userExists)
                 {
                     logic.AddUser(user);
-                    return new List<GetTeamsDTO>();
+                    return  Json(new { Teams = new List<GetTeamsDTO>()});
                 }
                 else
                 {
                     var userTeamsId = logic.GetUsersTeams(user.Email);
                     var logicTeam = new TeamLogic(Context);
                     var teams = logicTeam.GetTeams(userTeamsId);
-                    return teams;
+                    return Json(new { Teams = teams });
                 }
             }
             catch (FirebaseAuthException ex)
@@ -78,7 +78,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetDesciplinesDTO>?> GetDisciplines([FromHeader] string idToken)
+        public async Task<ActionResult?> GetDisciplines([FromHeader] string idToken)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Core.Controllers
                     });
                 }
                 
-                return allDisciplines;
+                return Json(new { disciplines = allDisciplines });
             }
             catch (FirebaseAuthException ex)
             {
@@ -103,7 +103,7 @@ namespace Core.Controllers
         }
 
         [HttpGet]
-        public async Task<GetTeamDetailsDTO?> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
+        public async Task<ActionResult?> GetTeamDetails([FromHeader] string idToken, [FromHeader] int teamId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Core.Controllers
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
                 var logicTeam = new TeamLogic(Context);
                 var teamsData = logicTeam.GetTeamDetails(user.Email, teamId);
-                return teamsData;
+                return Json(teamsData);
             }
             catch (FirebaseAuthException ex)
             {
