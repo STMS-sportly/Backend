@@ -18,5 +18,6 @@ namespace Data.Interfaces
         bool IsAdmin(int userType);
         List<User> GetMembers(int teamId);
         TeamCode GetTeamCode(int teamId);
+        bool JoinTeam(string email, string codeTeam);
     }
 }

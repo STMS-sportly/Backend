@@ -140,5 +140,32 @@ namespace Core.Controllers
                 return null;
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, string codeTeam)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var teamLogic = new TeamLogic(Context);
+                bool response = teamLogic.JoinTeam(user.Email, codeTeam);
+
+                if (!response)
+                {
+                    return BadRequest();
+                }
+
+                return Ok();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return null;
+            }
+        }
+
     }
 }

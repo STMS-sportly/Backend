@@ -143,11 +143,35 @@ namespace Data.Repositories
                     ExpireDate = DateTime.UtcNow.AddDays(2)
                 };
 
-                teamContext.TeamCodes.Update(code);
+                teamContext.TeamCodes.Add(code);
                 Save();
             }
 
             return code;
+        }
+
+        public bool JoinTeam(string email, string codeTeam)
+        {
+            TeamCode code;
+            try
+            {
+                code = teamContext.TeamCodes.Where(e => e.Code == codeTeam).First();
+            }
+            catch
+            {
+                return false;
+            }
+            var user = teamContext.Users.Where(e => e.Email == email).FirstOrDefault();
+            var teamType = teamContext.Teams.Where(e => e.TeamId == code.TeamId).Select(e => e.TeamType).FirstOrDefault();
+            teamContext.UsersTeams.Add(new UserTeam()
+            {
+                UserId = user.UserId,
+                TeamId = code.TeamId,
+                UserType = teamType == 0 ? 2 : 3,
+                JoinedDate = DateTime.UtcNow
+            });
+            Save();
+            return true;
         }
     }
 }

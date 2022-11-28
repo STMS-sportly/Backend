@@ -101,5 +101,10 @@ namespace Logic.BLL
             var code = teamRepo.GetTeamCode(teamId);
             return code.Code;
         }
+
+        public bool JoinTeam(string email, string codeTeam)
+        {
+            return teamRepo.JoinTeam(email, codeTeam);
+        }
     }
 }
