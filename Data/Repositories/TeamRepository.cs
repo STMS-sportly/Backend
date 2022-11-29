@@ -58,7 +58,7 @@ namespace Data.Repositories
             {
                 return new UserTeam() { TeamId = -1};
             }
-            return teamContext.UsersTeams.Where(e => e.UserId == user.UserId).FirstOrDefault() ?? new UserTeam();
+            return teamContext.UsersTeams.Where(e => e.UserId == user.UserId && e.TeamId == teamId).FirstOrDefault() ?? new UserTeam();
         }
 
         public List<User> GetMembers(int teamId)
