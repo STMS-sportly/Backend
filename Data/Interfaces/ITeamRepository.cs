@@ -20,6 +20,6 @@ namespace Data.Interfaces
         TeamCode GetTeamCode(int teamId);
         bool JoinTeam(string email, string codeTeam);
         void DeleteTeam(int teamId);
-        void LeaveTeam(string email, int teamId);
+        bool LeaveTeam(string email, int teamId);
     }
 }

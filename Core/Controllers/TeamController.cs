@@ -203,20 +203,23 @@ namespace Core.Controllers
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
                 var teamLogic = new TeamLogic(Context);
-                teamLogic.LeaveTeam(user.Email, teamId);
-                return Ok();
+                bool sucessfulOperation = teamLogic.LeaveTeam(user.Email, teamId);
+                if (sucessfulOperation)
+                    return Ok("");
+                else
+                    return BadRequest("Cannot leave a team !");
             }
             catch (FirebaseAuthException ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

@@ -200,7 +200,7 @@ namespace Data.Repositories
 
         }
 
-        public void LeaveTeam(string email, int teamId)
+        public bool LeaveTeam(string email, int teamId)
         {
             var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId ).FirstOrDefault();
             if (user != null)
@@ -209,24 +209,27 @@ namespace Data.Repositories
                 {
                     teamContext.UsersTeams.Remove(user);
                     Save();
+                    return true;
                 }
                 else if (user.UserType == 1) // ProAdmin
                 {
-                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 1).FirstOrDefault() != null;
+                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 1 && e.UserId != user.UserId).FirstOrDefault() != null;
                     if (theOtherAdminExists)
                     {
                         teamContext.UsersTeams.Remove(user);
                         Save();
+                        return true;
                     }
                     else
                     {
-                        var assistantExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 4).FirstOrDefault(); // Assistant
+                        var assistantExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 4 && e.UserId != user.UserId).FirstOrDefault(); // Assistant
                         if (assistantExists != null)
                         {
                             assistantExists.UserType = 1;
                             teamContext.UsersTeams.Remove(user);
                             teamContext.UsersTeams.Update(assistantExists);
                             Save();
+                            return true;
                         }
                         else
                         {
@@ -237,31 +240,36 @@ namespace Data.Repositories
                                 teamContext.UsersTeams.Remove(user);
                                 teamContext.UsersTeams.Update(newAdmin);
                                 Save();
+                                return true;
                             }
                         }
                     }
                 }
                 else if (user.UserType == 0) // Admin
                 {
-                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 0).FirstOrDefault() != null;
+                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 0 && e.UserId != user.UserId).FirstOrDefault() != null;
                     if (theOtherAdminExists)
                     {
                         teamContext.UsersTeams.Remove(user);
                         Save();
+                        return true;
                     }
                     else
                     {
-                        var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                        var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserId != user.UserId).FirstOrDefault();
                         if (newAdmin != null)
                         {
                             newAdmin.UserType = 0;
                             teamContext.UsersTeams.Remove(user);
                             teamContext.UsersTeams.Update(newAdmin);
                             Save();
+                            return true;
                         }
                     }
                 }
             }
+
+            return false;
         }
     }
 }

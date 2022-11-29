@@ -118,9 +118,9 @@ namespace Logic.BLL
             teamRepo.DeleteTeam(teamId);
         }
 
-        public void LeaveTeam(string email, int teamId)
+        public bool LeaveTeam(string email, int teamId)
         {
-            teamRepo.LeaveTeam(email, teamId);
+            return teamRepo.LeaveTeam(email, teamId);
         }
     }
 }
