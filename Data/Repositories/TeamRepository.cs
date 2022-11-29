@@ -122,7 +122,7 @@ namespace Data.Repositories
                 }
 
                 bool codeExists;
-                string newCode = "000000";
+                string newCode;
                 do 
                 {
                     codeExists = false;
@@ -140,7 +140,7 @@ namespace Data.Repositories
                 {
                     Code = newCode,
                     TeamId = teamId,
-                    ExpireDate = DateTime.UtcNow.AddDays(2)
+                    ExpireDate = DateTime.UtcNow.AddHours(1)
                 };
 
                 teamContext.TeamCodes.Add(code);
@@ -198,6 +198,70 @@ namespace Data.Repositories
             }
             Save();
 
+        }
+
+        public void LeaveTeam(string email, int teamId)
+        {
+            var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId ).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.UserType != 0 && user.UserType != 1) // Not admin always can leave a team
+                {
+                    teamContext.UsersTeams.Remove(user);
+                    Save();
+                }
+                else if (user.UserType == 1) // ProAdmin
+                {
+                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 1).FirstOrDefault() != null;
+                    if (theOtherAdminExists)
+                    {
+                        teamContext.UsersTeams.Remove(user);
+                        Save();
+                    }
+                    else
+                    {
+                        var assistantExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 4).FirstOrDefault(); // Assistant
+                        if (assistantExists != null)
+                        {
+                            assistantExists.UserType = 1;
+                            teamContext.UsersTeams.Remove(user);
+                            teamContext.UsersTeams.Update(assistantExists);
+                            Save();
+                        }
+                        else
+                        {
+                            var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                            if (newAdmin != null)
+                            {
+                                newAdmin.UserType = 1;
+                                teamContext.UsersTeams.Remove(user);
+                                teamContext.UsersTeams.Update(newAdmin);
+                                Save();
+                            }
+                        }
+                    }
+                }
+                else if (user.UserType == 0) // Admin
+                {
+                    bool theOtherAdminExists = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserType == 0).FirstOrDefault() != null;
+                    if (theOtherAdminExists)
+                    {
+                        teamContext.UsersTeams.Remove(user);
+                        Save();
+                    }
+                    else
+                    {
+                        var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                        if (newAdmin != null)
+                        {
+                            newAdmin.UserType = 0;
+                            teamContext.UsersTeams.Remove(user);
+                            teamContext.UsersTeams.Update(newAdmin);
+                            Save();
+                        }
+                    }
+                }
+            }
         }
     }
 }

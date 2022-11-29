@@ -5,6 +5,7 @@ using Logic.ALL.DTOs;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Authentication;
 
 namespace Core.Controllers
 {
@@ -165,7 +166,7 @@ namespace Core.Controllers
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
-                return null;
+                return BadRequest();
             }
         }
 
@@ -186,6 +187,32 @@ namespace Core.Controllers
                 return BadRequest();
             }
             catch(Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> LeaveTeam([FromHeader] string idToken, [FromRoute] int teamId)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var teamLogic = new TeamLogic(Context);
+                teamLogic.LeaveTeam(user.Email, teamId);
+                return Ok();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest();
+            }
+            catch (Exception ex)
             {
                 var logs = new LogsLogic(Context);
                 logs.AddLog(ex.Message);
