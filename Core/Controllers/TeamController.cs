@@ -123,15 +123,15 @@ namespace Core.Controllers
         }
 
         [HttpGet("{teamId}")]
-        public async Task<GetTeamCodeDTO?> GetTeamCode([FromHeader] string idToken, [FromRoute] int teamId)
+        public async Task<ActionResult?> GetTeamCode([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
             {
                 await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
                 var teamLogic = new TeamLogic(Context);
-                string code = teamLogic.GetTeamCode(teamId);
+                GetTeamCodeDTO teamCode = teamLogic.GetTeamCode(teamId);
 
-                return new GetTeamCodeDTO() { Code = code };
+                return Json(teamCode);
             }
             catch (FirebaseAuthException ex)
             {
@@ -141,8 +141,8 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPost("{codeTeam}")]
-        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromRoute] string codeTeam)
+        [HttpPost]
+        public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, [FromBody] string codeTeam)
         {
             try
             {

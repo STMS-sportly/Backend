@@ -9,5 +9,7 @@ namespace Logic.ALL.DTOs
     public class GetTeamCodeDTO
     {
         public string Code { get; set; }
+
+        public DateTime ExpireDate { get; set; }
     }
 }

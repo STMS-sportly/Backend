@@ -82,7 +82,7 @@ namespace Logic.BLL
                 Name = team.TeamName,
                 Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType)},
                 teamType = Enum.GetName(typeof(ETeamType), team.TeamType),
-                Role = Enum.GetName(typeof(EUserType), user.UserTypeS),
+                Role = Enum.GetName(typeof(EUserType), user.UserType),
                 MembersCount = teamRepo.GetNumberOfTeamMembers(team.TeamId),
                 Location = team.Location,
                 OrganizationName = team.OrganizationName,
@@ -98,10 +98,14 @@ namespace Logic.BLL
             teamRepo.Save();
         }
 
-        public string GetTeamCode(int teamId)
+        public GetTeamCodeDTO GetTeamCode(int teamId)
         {
             var code = teamRepo.GetTeamCode(teamId);
-            return code.Code;
+            return new GetTeamCodeDTO()
+            {
+                Code = code.Code,
+                ExpireDate = code.ExpireDate
+            };
         }
 
         public bool JoinTeam(string email, string codeTeam)
