@@ -194,7 +194,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost("{teamId}")]
         public async Task<ActionResult> LeaveTeam([FromHeader] string idToken, [FromRoute] int teamId)
         {
             try
