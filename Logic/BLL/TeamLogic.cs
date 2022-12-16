@@ -147,7 +147,7 @@ namespace Logic.BLL
             {
                 UserId= updatedMember.UserId,
                 TeamId= updatedMember.TeamId,
-                UserType = (int)(Enum.Parse(typeof(EDiscipline), updatedMember.NewRole))
+                UserType = (int)(Enum.Parse(typeof(EUserType), updatedMember.NewRole))
             };
 
             return teamRepo.ChangeMemberRole(newUserTeam);
