@@ -77,7 +77,7 @@ namespace Data.Repositories
             return res;
         }
 
-        public void UpdateTeam(Team team)
+        public bool UpdateTeam(Team team)
         {
             var oldteam = teamContext.Teams.Where(e => e.TeamId == team.TeamId).FirstOrDefault();
             if (oldteam != null)
@@ -86,7 +86,10 @@ namespace Data.Repositories
                 oldteam.Location = team.Location;
                 oldteam.OrganizationName = team.OrganizationName;
                 teamContext.SaveChanges();
+                return true;
             }
+
+            return false;
         }
 
         public void Save()
@@ -279,6 +282,19 @@ namespace Data.Repositories
                     Save();
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        public bool ChangeMemberRole(UserTeam newUserTeam)
+        {
+            var user = teamContext.UsersTeams.Where(e => e.UserId == newUserTeam.UserId && e.TeamId == newUserTeam.TeamId).FirstOrDefault();
+            if (user != null)
+            {
+                user.UserType = newUserTeam.UserType;
+                Save();
+                return true;
             }
 
             return false;

@@ -10,7 +10,7 @@ namespace Data.Interfaces
     public interface ITeamRepository : IDisposable
     {
         void InsertTeam(Team team, string email);
-        void UpdateTeam(Team team);
+        bool UpdateTeam(Team team);
         void Save();
         Team GetUserTeamById(int teamId);
         int GetNumberOfTeamMembers(int teamId);
@@ -22,5 +22,6 @@ namespace Data.Interfaces
         void DeleteTeam(int teamId);
         bool LeaveTeam(string email, int teamId);
         bool RemoveMember(string email, int teamId, int teamMemberId);
+        bool ChangeMemberRole(UserTeam newUserTeam);
     }
 }

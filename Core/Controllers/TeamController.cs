@@ -262,8 +262,11 @@ namespace Core.Controllers
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
                 var teamLogic = new TeamLogic(Context);
-                teamLogic.UpdateTeam(updatedTeam);
-                return Ok();
+                bool sucessfulOperation = teamLogic.UpdateTeam(updatedTeam); ;
+                if (sucessfulOperation)
+                    return Ok("");
+                else
+                    return BadRequest("Cannot change user role!");
             }
             catch (FirebaseAuthException ex)
             {
@@ -279,6 +282,34 @@ namespace Core.Controllers
             }
         }
 
+        [HttpPut]
+        public async Task<ActionResult> ChangeMemberRole([FromHeader] string idToken, UpdatedMemberRoleDTO updatedMember)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var teamLogic = new TeamLogic(Context);
+                bool sucessfulOperation = teamLogic.ChangeMemberRole(updatedMember);
+                if (sucessfulOperation)
+                    return Ok("");
+                else
+                    return BadRequest("Cannot change user role!");
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
   
