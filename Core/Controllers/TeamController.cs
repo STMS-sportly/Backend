@@ -131,7 +131,7 @@ namespace Core.Controllers
                 await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
                 var teamLogic = new TeamLogic(Context);
                 GetTeamCodeDTO teamCode = teamLogic.GetTeamCode(teamId);
-
+                teamCode.ExpireDate = teamCode.ExpireDate.ToLocalTime();
                 return Json(teamCode);
             }
             catch (FirebaseAuthException ex)

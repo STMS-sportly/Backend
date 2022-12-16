@@ -75,6 +75,7 @@ namespace Logic.BLL
                         Role = Enum.GetName(typeof(EUserType), memberStatus.UserType),
                     });
             }
+
             var user = teamRepo.GetUserTeam(email, teamId);
             var res = new GetTeamDetailsDTO()
             {

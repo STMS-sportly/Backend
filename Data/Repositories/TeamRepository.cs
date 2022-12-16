@@ -21,7 +21,6 @@ namespace Data.Repositories
             teamContext.Teams.Add(team);
             Save();
             var userId = teamContext.Users.Where(e => e.Email == email).Select(e => e.UserId).FirstOrDefault();
-            Console.WriteLine(team.TeamId);
             teamContext.UsersTeams?.Add(new UserTeam { UserId = userId, TeamId = team.TeamId, UserType = team.TeamType, JoinedDate = DateTime.UtcNow });
         }
 
@@ -36,11 +35,11 @@ namespace Data.Repositories
                         TeamId = tmp.TeamId,
                         TeamName = tmp.TeamName,
                         Discipline = new { Name = Enum.GetName(typeof(EDiscipline), tmp.SportType) },
-                        Type =  Enum.GetName(typeof(ETeamType), tmp.TeamType),
+                        Type = Enum.GetName(typeof(ETeamType), tmp.TeamType),
                         MembersCount = teamMembers
                     }).ToList<object>();
         }
-        
+
         public Team GetUserTeamById(int teamId)
         {
             return teamContext.Teams.Where(e => e.TeamId == teamId).FirstOrDefault() ?? new Team();
@@ -56,7 +55,7 @@ namespace Data.Repositories
             var user = teamContext.Users.Where(e => e.Email == email).FirstOrDefault();
             if (user == null)
             {
-                return new UserTeam() { TeamId = -1};
+                return new UserTeam() { TeamId = -1 };
             }
             return teamContext.UsersTeams.Where(e => e.UserId == user.UserId && e.TeamId == teamId).FirstOrDefault() ?? new UserTeam();
         }
@@ -65,9 +64,9 @@ namespace Data.Repositories
         {
             var userTeam = teamContext.UsersTeams.Where(e => e.TeamId == teamId).ToList();
             var res = new List<User>();
-            foreach(var user in userTeam)
+            foreach (var user in userTeam)
             {
-                var newUser = teamContext.Users.Where(e => e.UserId == user.UserId).FirstOrDefault() ?? new User() { UserId = -1};
+                var newUser = teamContext.Users.Where(e => e.UserId == user.UserId).FirstOrDefault() ?? new User() { UserId = -1 };
                 if (newUser.UserId != -1)
                 {
                     res.Add(newUser);
@@ -106,39 +105,43 @@ namespace Data.Repositories
         {
             var code = teamContext.TeamCodes.Where(e => e.TeamId == teamId).FirstOrDefault();
             var codes = teamContext.TeamCodes.Select(e => e.Code).ToList();
-            if (code == null || DateTime.Compare(code.ExpireDate, DateTime.UtcNow) < 0)
+            if (code != null)
             {
-                if (code != null)
+                var t1 = code.ExpireDate.ToUniversalTime();
+                var t2 = DateTime.UtcNow.AddMinutes(15).ToUniversalTime();
+                var codeTimeIsValid = DateTime.Compare(code.ExpireDate.ToUniversalTime(), DateTime.UtcNow.AddMinutes(15).ToUniversalTime());
+                if (codeTimeIsValid > 0)
                 {
-                    teamContext.TeamCodes.Remove(code);
-                    Save();
+                    return code;
                 }
-
-                bool codeExists;
-                string newCode;
-                do 
-                {
-                    codeExists = false;
-                    Random r = new Random();
-                    newCode = (r.Next(100_000, 999_999)).ToString();
-
-                    if (codes.Contains(newCode))
-                    {
-                        codeExists = true;
-                    }
-
-                } while (codeExists);
-
-                code = new TeamCode()
-                {
-                    Code = newCode,
-                    TeamId = teamId,
-                    ExpireDate = DateTime.UtcNow.AddHours(1)
-                };
-
-                teamContext.TeamCodes.Add(code);
+                teamContext.TeamCodes.Remove(code);
                 Save();
             }
+
+            bool codeExists;
+            string newCode;
+            do
+            {
+                codeExists = false;
+                Random r = new Random();
+                newCode = (r.Next(100_000, 999_999)).ToString();
+
+                if (codes.Contains(newCode))
+                {
+                    codeExists = true;
+                }
+
+            } while (codeExists);
+
+            code = new TeamCode()
+            {
+                Code = newCode,
+                TeamId = teamId,
+                ExpireDate = DateTime.UtcNow.AddHours(1).ToLocalTime()
+            };
+
+            teamContext.TeamCodes.Add(code);
+            Save();
 
             return code;
         }
@@ -195,7 +198,7 @@ namespace Data.Repositories
 
         public bool LeaveTeam(string email, int teamId)
         {
-            var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId ).FirstOrDefault();
+            var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId).FirstOrDefault();
             if (user != null)
             {
                 if (user.UserType != 0 && user.UserType != 1) // Not admin always can leave a team
@@ -274,7 +277,7 @@ namespace Data.Repositories
                 if (user.UserType != 0 || user.UserType != 1)
                     return false;
 
-                var memberToDelete = teamContext.UsersTeams.Where(e => e.User.UserId == teamMemberId && e.TeamId == teamId ).FirstOrDefault();
+                var memberToDelete = teamContext.UsersTeams.Where(e => e.User.UserId == teamMemberId && e.TeamId == teamId).FirstOrDefault();
 
                 if (memberToDelete != null)
                 {
