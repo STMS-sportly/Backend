@@ -19,11 +19,13 @@ namespace Data.DataAccess
             Users = new UserRepository(_appContext);
             Teams = new TeamRepository(_appContext);
             Logs = new LogRepository(_appContext);
+            Schedule = new ScheduleRepository(_appContext);
         }
 
         public IUserRepository Users { get; set; }
         public ITeamRepository Teams { get; set; }
         public ILogRepository Logs { get; set; }
+        public IScheduleRepository Schedule { get; set; }
 
         public int Complete()
         {
