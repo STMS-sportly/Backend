@@ -79,29 +79,19 @@ namespace Data.Repositories
 
         public void UpdateTeam(Team team)
         {
-            teamContext.Entry(team).State = EntityState.Modified;
+            var oldteam = teamContext.Teams.Where(e => e.TeamId == team.TeamId).FirstOrDefault();
+            if (oldteam != null)
+            {
+                oldteam.TeamName = team.TeamName;
+                oldteam.Location = team.Location;
+                oldteam.OrganizationName = team.OrganizationName;
+                teamContext.SaveChanges();
+            }
         }
 
         public void Save()
         {
             teamContext.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed && disposing)
-            {
-                teamContext.Dispose();
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public bool IsAdmin(int userType)
@@ -292,6 +282,23 @@ namespace Data.Repositories
             }
 
             return false;
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed && disposing)
+            {
+                teamContext.Dispose();
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

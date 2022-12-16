@@ -253,6 +253,32 @@ namespace Core.Controllers
             }
         }
 
+        [HttpPut]
+        public async Task<ActionResult> UpdateTeam([FromHeader] string idToken, UpdateTeamDTO updatedTeam)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var teamLogic = new TeamLogic(Context);
+                teamLogic.UpdateTeam(updatedTeam);
+                return Ok();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
   

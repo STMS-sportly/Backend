@@ -127,5 +127,18 @@ namespace Logic.BLL
         {
             return teamRepo.RemoveMember(email, teamId, teamMemberId);
         }
+
+        public void UpdateTeam(UpdateTeamDTO updatedTeam)
+        {
+            var newTeam = new Team()
+            {
+                TeamId = updatedTeam.TeamId,
+                TeamName = updatedTeam.NewTeamName,
+                Location = updatedTeam.NewLocation,
+                OrganizationName = updatedTeam.NewOrganizationName
+            };
+
+            teamRepo.UpdateTeam(newTeam);
+        }
     }
 }
