@@ -233,7 +233,7 @@ namespace Data.Repositories
                         }
                         else
                         {
-                            var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                            var newAdmin = teamContext.UsersTeams.Where(e => e.TeamId == teamId && e.UserId != user.UserId).FirstOrDefault();
                             if (newAdmin != null)
                             {
                                 newAdmin.UserType = 1;
