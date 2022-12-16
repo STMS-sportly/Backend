@@ -13,22 +13,20 @@ namespace Data.Models
         [Key]
         public int EventId { get; set; }
 
-        [ForeignKey("Team"), Required]
+        [Required]
         public int TeamId { get; set; }
+
+        [ForeignKey("TeamId")]
+        public virtual Team Team { get; set; }
 
         [Required, MaxLength(100)]
         public string EventName { get; set; }
 
         [Required, DataType(DataType.DateTime)]
-        public DateTime EventStart { get; set; }
-
-        [Required, DataType(DataType.DateTime)]
-        public DateTime EventEnd { get; set; }
+        public DateTime EventDate { get; set; }
 
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        [MaxLength(100)]
-        public string? Location { get; set; }
     }
 }
