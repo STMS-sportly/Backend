@@ -3,7 +3,7 @@
 namespace Core.Controllers
 {
     [ApiController]
-    [Route("api/[action]")]
+    [Route("user/[action]")]
     public class UserController : BaseController
     {
 
