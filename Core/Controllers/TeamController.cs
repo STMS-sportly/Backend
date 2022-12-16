@@ -223,5 +223,36 @@ namespace Core.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{teamId}/{userId}")]
+        public async Task<ActionResult> RemoveMember([FromHeader] string idToken, [FromRoute] int teamId, [FromRoute] int userId)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var teamLogic = new TeamLogic(Context);
+                bool sucessfulOperation = teamLogic.RemoveMember(user.Email, teamId, userId);
+                if (sucessfulOperation)
+                    return Ok("");
+                else
+                    return BadRequest("Cannot remove user!");
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
+  

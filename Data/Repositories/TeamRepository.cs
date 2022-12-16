@@ -271,5 +271,27 @@ namespace Data.Repositories
 
             return false;
         }
+
+        public bool RemoveMember(string email, int teamId, int teamMemberId)
+        {
+            var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId).FirstOrDefault();
+
+            if (user != null)
+            {
+                if (user.UserType != 0 || user.UserType != 1)
+                    return false;
+
+                var memberToDelete = teamContext.UsersTeams.Where(e => e.User.UserId == teamMemberId && e.TeamId == teamId ).FirstOrDefault();
+
+                if (memberToDelete != null)
+                {
+                    teamContext.UsersTeams.Remove(memberToDelete);
+                    Save();
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

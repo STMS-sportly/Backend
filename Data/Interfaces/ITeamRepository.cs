@@ -21,5 +21,6 @@ namespace Data.Interfaces
         bool JoinTeam(string email, string codeTeam);
         void DeleteTeam(int teamId);
         bool LeaveTeam(string email, int teamId);
+        bool RemoveMember(string email, int teamId, int teamMemberId);
     }
 }

@@ -122,5 +122,10 @@ namespace Logic.BLL
         {
             return teamRepo.LeaveTeam(email, teamId);
         }
+
+        public bool RemoveMember(string email, int teamId, int teamMemberId)
+        {
+            return teamRepo.RemoveMember(email, teamId, teamMemberId);
+        }
     }
 }
