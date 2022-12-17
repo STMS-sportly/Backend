@@ -19,6 +19,9 @@ namespace Data.Models
         [ForeignKey("TeamId")]
         public virtual Team Team { get; set; }
 
+        [Required]
+        public int CreatorId { get; set; }
+
         [Required, MaxLength(100)]
         public string EventName { get; set; }
 

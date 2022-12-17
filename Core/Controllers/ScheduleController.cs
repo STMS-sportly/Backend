@@ -18,11 +18,63 @@ namespace Core.Controllers
                 string userid = decodedToken.Uid;
                 var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
                 var logic = new ScheduleLogic(Context);
-                bool succesfullOperation = logic.CreateEvent(newEvent);
+                bool succesfullOperation = logic.CreateEvent(user.Email, newEvent);
                 if (succesfullOperation)
                     return Ok();
                 else
                     return BadRequest("Problem with creating Event");
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Source);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetMonthEvents([FromHeader] string idToken, [FromRoute] int teamId, DateTime date)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var logic = new ScheduleLogic(Context);
+                var events = logic.GetMonthEvents(teamId, date);
+                return Json(new {Events = events});
+            }
+            catch (FirebaseAuthException ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                var logs = new LogsLogic(Context);
+                logs.AddLog(ex.Message);
+                return BadRequest(ex.Source);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDayEvents([FromHeader] string idToken, [FromRoute] int teamId, DateTime date)
+        {
+            try
+            {
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
+                string userid = decodedToken.Uid;
+                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var logic = new ScheduleLogic(Context);
+                var events = logic.GetDayEvents(user.Email, teamId, date);
+                return Json(new { Events = events });
             }
             catch (FirebaseAuthException ex)
             {

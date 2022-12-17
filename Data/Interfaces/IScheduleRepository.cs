@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using Data.DataTO;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Data.Interfaces
 {
     public interface IScheduleRepository
     {
-        bool CreateEvent(Event t);
+        bool CreateEvent(string email, Event t);
+        List<Event> GetMonthEvents(int teamId, DateTime date);
+        List<DayEventTO> GetDayEvents(string email, int teamId, DateTime date);
     }
 }

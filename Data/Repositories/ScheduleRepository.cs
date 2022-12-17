@@ -1,4 +1,5 @@
 ﻿using Data.DataAccess;
+using Data.DataTO;
 using Data.Interfaces;
 using Data.Models;
 using System;
@@ -23,10 +24,15 @@ namespace Data.Repositories
             scheduleContext.SaveChanges();
         }
 
-        public bool CreateEvent(Event t)
+        public bool CreateEvent(string email, Event t)
         {
             try
             {
+                var user = scheduleContext.Users.Where(u => u.Email == email).FirstOrDefault();
+                if (user == null)
+                    return false;
+
+                t.CreatorId = user.UserId;
                 scheduleContext.Events.Add(t);
                 Save();
                 return true;
@@ -35,6 +41,30 @@ namespace Data.Repositories
             { 
                 return false; 
             }
+        }
+
+        public List<Event> GetMonthEvents(int teamId, DateTime date)
+        {
+            var res = scheduleContext.Events.Where(e => e.EventDate.Month == date.Month && e.TeamId == teamId).ToList();
+            return res;
+        }
+
+        public List<DayEventTO> GetDayEvents(string email, int teamId, DateTime date)
+        {
+            var res = (from e in scheduleContext.Events
+                        join t in scheduleContext.Teams on e.TeamId equals t.TeamId
+                        join u in scheduleContext.UsersTeams on e.TeamId equals u.TeamId
+                        join us in scheduleContext.Users on u.UserId equals us.UserId
+                        where e.TeamId == teamId && us.Email == email && e.EventDate.Day == date.Day
+                        select new DayEventTO
+                        {
+                            EventId = e.EventId,
+                            Date = e.EventDate,
+                            Description = e.Description,
+                            Title = e.EventName,
+                            Editable = ((e.CreatorId == us.UserId) || (u.UserType == 0 || u.UserType == 1))
+                        }).ToList();
+            return res;
         }
     }
 }
