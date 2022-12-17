@@ -7,13 +7,13 @@ namespace Core.Controllers
     public class ChatController : Controller
     {
         [HttpPost]
-        public async Task<ActionResult> SendMessage()
+        public ActionResult SendMessage()
         {
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetMessages()
+        public ActionResult GetMessages()
         {
             return Ok();
         }
