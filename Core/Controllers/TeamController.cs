@@ -1,4 +1,5 @@
 ﻿using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using FirebaseAdmin.Auth;
 using Logic.ALL.DTOs;
@@ -27,15 +28,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return Unauthorized(ex.Message);
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Source);
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -66,15 +63,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return null;
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return null;
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -97,9 +90,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return null;
+                return Unauthorized(AddLog(ex));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -117,9 +112,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return null;
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -136,9 +133,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return null;
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -164,9 +163,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest();
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -182,15 +183,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest();
+                return Unauthorized(AddLog(ex));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest();
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -211,15 +208,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -241,15 +234,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -270,15 +259,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(AddLog(ex));
             }
         }
 
@@ -299,15 +284,11 @@ namespace Core.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return Unauthorized(AddLog(ex));
             }
             catch (Exception ex)
             {
-                var logs = new LogsLogic(Context);
-                logs.AddLog(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(AddLog(ex));
             }
         }
     }
