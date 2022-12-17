@@ -1,5 +1,6 @@
 ﻿using FirebaseAdmin.Auth;
 using Logic.ALL.DTOs;
+using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
                 bool succesfullOperation = logic.CreateEvent(user.Email, newEvent);
                 if (succesfullOperation)
@@ -39,9 +38,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
                 var events = logic.GetMonthEvents(teamId, date);
                 return Json(new {Events = events});
@@ -61,9 +58,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
                 var events = logic.GetDayEvents(user.Email, teamId, date);
                 return Json(new { Events = events });

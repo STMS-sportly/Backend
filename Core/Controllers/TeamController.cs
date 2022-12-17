@@ -3,6 +3,7 @@ using Data.Interfaces;
 using Data.Models;
 using FirebaseAdmin.Auth;
 using Logic.ALL.DTOs;
+using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,9 +20,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new TeamLogic(Context);
                 logic.CreateTeam(user, newTeam);
                 return Ok();
@@ -41,12 +40,8 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
-
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new UserLogic(Context);
-
                 var userExists = logic.UserExist(user);
                 if (!userExists)
                 {
@@ -103,9 +98,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logicTeam = new TeamLogic(Context);
                 var teamsData = logicTeam.GetTeamDetails(user.Email, teamId);
                 return Json(teamsData);
@@ -144,16 +137,11 @@ namespace Core.Controllers
         [HttpPost]
         public async Task<ActionResult?> JoinTeam([FromHeader] string idToken, JoinTeamDTO codeTeam)
         {
-
-
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
                 bool response = teamLogic.JoinTeam(user.Email, codeTeam.Code);
-
                 if (!response)
                 {
                     return BadRequest();
@@ -196,9 +184,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
                 bool sucessfulOperation = teamLogic.LeaveTeam(user.Email, teamId);
                 if (sucessfulOperation)
@@ -222,9 +208,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
                 bool sucessfulOperation = teamLogic.RemoveMember(user.Email, teamId, userId);
                 if (sucessfulOperation)
@@ -247,9 +231,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
                 bool sucessfulOperation = teamLogic.UpdateTeam(updatedTeam); ;
                 if (sucessfulOperation)
@@ -272,9 +254,7 @@ namespace Core.Controllers
         {
             try
             {
-                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
-                string userid = decodedToken.Uid;
-                var user = await FirebaseAuth.DefaultInstance.GetUserAsync(userid);
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
                 bool sucessfulOperation = teamLogic.ChangeMemberRole(updatedMember);
                 if (sucessfulOperation)

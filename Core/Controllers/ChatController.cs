@@ -7,7 +7,13 @@ namespace Core.Controllers
     public class ChatController : Controller
     {
         [HttpPost]
-        public IActionResult Index()
+        public async Task<ActionResult> SendMessage()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetMessages()
         {
             return Ok();
         }
