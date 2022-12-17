@@ -158,6 +158,12 @@ namespace Data.Repositories
                 return false;
             }
             var user = teamContext.Users.Where(e => e.Email == email).FirstOrDefault();
+
+            if (user == null)
+            {
+                return false;
+            }
+
             var teamType = teamContext.Teams.Where(e => e.TeamId == code.TeamId).Select(e => e.TeamType).FirstOrDefault();
 
             var checkIfUserIsInTeam = teamContext.UsersTeams.Where(e => e.TeamId == code.TeamId && e.UserId == user.UserId).FirstOrDefault();
@@ -198,6 +204,7 @@ namespace Data.Repositories
 
         public bool LeaveTeam(string email, int teamId)
         {
+
             var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId).FirstOrDefault();
             if (user != null)
             {

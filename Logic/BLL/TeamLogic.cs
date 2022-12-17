@@ -42,9 +42,9 @@ namespace Logic.BLL
                 {
                     Id = team.TeamId,
                     TeamName = team.TeamName,
-                    Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType) },
-                    Type = Enum.GetName(typeof(ETeamType), team.TeamType),
-                    Role = Enum.GetName(typeof(EUserType), id.UserType),
+                    Discipline = new GetDesciplinesDTO() { Name = EnumExtensions.EnumIntToString(typeof(EDiscipline), team.SportType) ?? "Undefined" },
+                    Type = EnumExtensions.EnumIntToString(typeof(ETeamType), team.TeamType) ?? "Undefined",
+                    Role = EnumExtensions.EnumIntToString(typeof(EUserType), id.UserType) ?? "Undefined",
                     MembersCount = teamRepo.GetNumberOfTeamMembers(id.TeamId)
                 });
             }
@@ -72,7 +72,7 @@ namespace Logic.BLL
                         Id = member.UserId,
                         FirstName = member.Firstname,
                         LastName = member.Surname,
-                        Role = Enum.GetName(typeof(EUserType), memberStatus.UserType),
+                        Role = EnumExtensions.EnumIntToString(typeof(EUserType), memberStatus.UserType) ?? "Undefined",
                     });
             }
 
@@ -81,9 +81,9 @@ namespace Logic.BLL
             {
                 Id = team.TeamId,
                 Name = team.TeamName,
-                Discipline = new GetDesciplinesDTO() { Name = Enum.GetName(typeof(EDiscipline), team.SportType)},
-                teamType = Enum.GetName(typeof(ETeamType), team.TeamType),
-                Role = Enum.GetName(typeof(EUserType), user.UserType),
+                Discipline = new GetDesciplinesDTO() { Name = EnumExtensions.EnumIntToString(typeof(EDiscipline), team.SportType) ?? "Undefined" },
+                teamType = EnumExtensions.EnumIntToString(typeof(ETeamType), team.TeamType) ?? "Undefined",
+                Role = EnumExtensions.EnumIntToString(typeof(EUserType), user.UserType) ?? "Undefined",
                 MembersCount = teamRepo.GetNumberOfTeamMembers(team.TeamId),
                 Location = team.Location,
                 OrganizationName = team.OrganizationName,
@@ -104,7 +104,7 @@ namespace Logic.BLL
             var code = teamRepo.GetTeamCode(teamId);
             return new GetTeamCodeDTO()
             {
-                Code = code.Code,
+                Code = code.Code ?? "Undefined",
                 ExpireDate = code.ExpireDate
             };
         }
@@ -146,9 +146,9 @@ namespace Logic.BLL
         {
             var newUserTeam = new UserTeam()
             {
-                UserId= updatedMember.UserId,
-                TeamId= updatedMember.TeamId,
-                UserType = (int)(Enum.Parse(typeof(EUserType), updatedMember.NewRole))
+                UserId = updatedMember.UserId,
+                TeamId = updatedMember.TeamId,
+                UserType = EnumExtensions.EnumDescriptionToInt(typeof(EUserType), updatedMember.NewRole)
             };
 
             return teamRepo.ChangeMemberRole(newUserTeam);
