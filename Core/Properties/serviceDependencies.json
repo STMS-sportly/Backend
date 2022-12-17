@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "apis1": {
-      "type": "apis"
-    },
     "identityapp1": {
       "ignored": "true",
       "type": "identityapp"
@@ -18,6 +15,9 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:StmsCs",
       "dynamicId": null
+    },
+    "apis1": {
+      "type": "apis"
     }
   }
 }

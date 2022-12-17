@@ -6,6 +6,11 @@
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:StmsCs",
       "dynamicId": null
+    },
+    "apis1": {
+      "apiEndpoint": "https://sportly-api.azure-api.net/",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/Sportly-Api/apis/SporltyAPI",
+      "type": "apis.azure"
     }
   }
 }
