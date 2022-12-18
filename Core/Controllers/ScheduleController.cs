@@ -11,13 +11,13 @@ namespace Core.Controllers
     public class ScheduleController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult> CreateEvent([FromHeader] string idToken, CreateEventDTO newEvent)
+        public async Task<ActionResult> CreateEvent([FromHeader] string idToken,[FromRoute] int teamId, CreateEventDTO newEvent)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
-                bool succesfullOperation = logic.CreateEvent(user.Email, newEvent);
+                bool succesfullOperation = logic.CreateEvent(user.Email, teamId, newEvent);
                 if (succesfullOperation)
                     return Ok();
                 else

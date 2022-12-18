@@ -20,14 +20,14 @@ namespace Logic.BLL
             scheduleRepo = new ScheduleRepository(context);
         }
 
-        public bool CreateEvent(string email, CreateEventDTO newEvent)
+        public bool CreateEvent(string email,int teamId, CreateEventDTO newEvent)
         {
             var t = new Event()
             {
                 Description = newEvent.Description,
                 EventDate = newEvent.eventDate,
                 EventName = newEvent.Title,
-                TeamId = newEvent.TeamId,
+                TeamId = teamId,
             };
             return scheduleRepo.CreateEvent(email, t);
         }
