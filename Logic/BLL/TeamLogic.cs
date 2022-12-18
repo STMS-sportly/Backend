@@ -129,11 +129,11 @@ namespace Logic.BLL
             return teamRepo.RemoveMember(email, teamId, teamMemberId);
         }
 
-        public bool UpdateTeam(UpdateTeamDTO updatedTeam)
+        public bool UpdateTeam(int teamId, UpdateTeamDTO updatedTeam)
         {
             var newTeam = new Team()
             {
-                TeamId = updatedTeam.TeamId,
+                TeamId = teamId,
                 TeamName = updatedTeam.NewTeamName,
                 Location = updatedTeam.NewLocation,
                 OrganizationName = updatedTeam.NewOrganizationName
@@ -142,12 +142,12 @@ namespace Logic.BLL
             return teamRepo.UpdateTeam(newTeam);
         }
 
-        public bool ChangeMemberRole(UpdatedMemberRoleDTO updatedMember)
+        public bool ChangeMemberRole(int teamId, UpdatedMemberRoleDTO updatedMember)
         {
             var newUserTeam = new UserTeam()
             {
                 UserId = updatedMember.UserId,
-                TeamId = updatedMember.TeamId,
+                TeamId = teamId,
                 UserType = EnumExtensions.EnumDescriptionToInt(typeof(EUserType), updatedMember.NewRole)
             };
 

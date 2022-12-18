@@ -227,13 +227,13 @@ namespace Core.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateTeam([FromHeader] string idToken, UpdateTeamDTO updatedTeam)
+        public async Task<ActionResult> UpdateTeam([FromHeader] string idToken, [FromRoute] int teamId, UpdateTeamDTO updatedTeam)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
-                bool sucessfulOperation = teamLogic.UpdateTeam(updatedTeam); ;
+                bool sucessfulOperation = teamLogic.UpdateTeam(teamId, updatedTeam);
                 if (sucessfulOperation)
                     return Ok("");
                 else
@@ -250,13 +250,13 @@ namespace Core.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> ChangeMemberRole([FromHeader] string idToken, UpdatedMemberRoleDTO updatedMember)
+        public async Task<ActionResult> ChangeMemberRole([FromHeader] string idToken,[FromRoute] int teamId, UpdatedMemberRoleDTO updatedMember)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
-                bool sucessfulOperation = teamLogic.ChangeMemberRole(updatedMember);
+                bool sucessfulOperation = teamLogic.ChangeMemberRole(teamId, updatedMember);
                 if (sucessfulOperation)
                     return Ok("");
                 else

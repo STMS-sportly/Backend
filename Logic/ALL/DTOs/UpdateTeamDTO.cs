@@ -8,7 +8,6 @@ namespace Logic.ALL.DTOs
 {
     public class UpdateTeamDTO
     {
-        public int TeamId { get; set; } 
         public string NewTeamName { get; set; }
         public string NewLocation { get; set; }
         public string NewOrganizationName { get; set; }
