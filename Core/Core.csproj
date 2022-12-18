@@ -21,8 +21,11 @@
     </PackageReference>
     <PackageReference Include="NEST" Version="7.17.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <ProjectReference Include="..\Data\Data.csproj" />
-    <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Data\Data.csproj" />
+		<ProjectReference Include="..\Logic\Logic.csproj" />
+	</ItemGroup>
 
 </Project>

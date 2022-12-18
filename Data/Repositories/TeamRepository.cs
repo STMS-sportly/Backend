@@ -281,7 +281,7 @@ namespace Data.Repositories
 
             if (user != null)
             {
-                if (user.UserType != 0 || user.UserType != 1)
+                if (user.UserType != 0 && user.UserType != 1)
                     return false;
 
                 var memberToDelete = teamContext.UsersTeams.Where(e => e.User.UserId == teamMemberId && e.TeamId == teamId).FirstOrDefault();
