@@ -8,8 +8,6 @@ namespace Logic.ALL.DTOs
 {
     public class UpdatedMemberRoleDTO
     {
-        public int UserId { get; set; }
-
         public string NewRole { get; set; }
     }
 }

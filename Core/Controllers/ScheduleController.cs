@@ -10,8 +10,8 @@ namespace Core.Controllers
     [Route("schedule/[action]")]
     public class ScheduleController : BaseController
     {
-        [HttpPost]
-        public async Task<ActionResult> CreateEvent([FromHeader] string idToken,[FromRoute] int teamId, CreateEventDTO newEvent)
+        [HttpPost("{teamId}")]
+        public async Task<ActionResult> CreateEvent([FromHeader] string idToken, [FromRoute] int teamId, CreateEventDTO newEvent)
         {
             try
             {
@@ -33,15 +33,16 @@ namespace Core.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetMonthEvents([FromHeader] string idToken, [FromRoute] int teamId, DateTime date)
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult> GetMonthEvents([FromHeader] string idToken, [FromRoute] int teamId, string date)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
-                var events = logic.GetMonthEvents(teamId, date);
-                return Json(new {Events = events});
+                DateTime t = DateTime.Parse(date);
+                var events = logic.GetMonthEvents(teamId, t);
+                return Json(new { Events = events });
             }
             catch (FirebaseAuthException ex)
             {
@@ -53,14 +54,15 @@ namespace Core.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetDayEvents([FromHeader] string idToken, [FromRoute] int teamId, DateTime date)
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult> GetDayEvents([FromHeader] string idToken, [FromRoute] int teamId, string date)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
-                var events = logic.GetDayEvents(user.Email, teamId, date);
+                DateTime t = DateTime.Parse(date);
+                var events = logic.GetDayEvents(user.Email, teamId, t);
                 return Json(new { Events = events });
             }
             catch (FirebaseAuthException ex)

@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('SporltyAPI', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('Sportly-API', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -96,16 +96,15 @@
             },
             {
               "type": "Microsoft.ApiManagement/service/apis",
-              "name": "Sportly-Api/SporltyAPI",
+              "name": "Sportly-Api/Sportly-API",
               "properties": {
-                "displayName": "Sports Team Managment System - Sportly",
+                "displayName": "Sportly-API",
                 "apiRevision": "1",
                 "description": null,
-                "subscriptionRequired": false,
-                "serviceUrl": "https://sportly-stms.azurewebsites.net",
-                "path": "",
+                "subscriptionRequired": true,
+                "serviceUrl": null,
+                "path": "sportly",
                 "protocols": [
-                  "http",
                   "https"
                 ],
                 "authenticationSettings": {

@@ -142,11 +142,11 @@ namespace Logic.BLL
             return teamRepo.UpdateTeam(newTeam);
         }
 
-        public bool ChangeMemberRole(int teamId, UpdatedMemberRoleDTO updatedMember)
+        public bool ChangeMemberRole(int teamId, int userId, UpdatedMemberRoleDTO updatedMember)
         {
             var newUserTeam = new UserTeam()
             {
-                UserId = updatedMember.UserId,
+                UserId = userId,
                 TeamId = teamId,
                 UserType = EnumExtensions.EnumDescriptionToInt(typeof(EUserType), updatedMember.NewRole)
             };

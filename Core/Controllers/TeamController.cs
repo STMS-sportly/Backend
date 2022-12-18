@@ -226,7 +226,7 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{teamId}")]
         public async Task<ActionResult> UpdateTeam([FromHeader] string idToken, [FromRoute] int teamId, UpdateTeamDTO updatedTeam)
         {
             try
@@ -249,14 +249,14 @@ namespace Core.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult> ChangeMemberRole([FromHeader] string idToken,[FromRoute] int teamId, UpdatedMemberRoleDTO updatedMember)
+        [HttpPut("{teamId}/{userId}")]
+        public async Task<ActionResult> ChangeMemberRole([FromHeader] string idToken,[FromRoute] int teamId, [FromRoute] int userId, UpdatedMemberRoleDTO updatedMember)
         {
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var teamLogic = new TeamLogic(Context);
-                bool sucessfulOperation = teamLogic.ChangeMemberRole(teamId, updatedMember);
+                bool sucessfulOperation = teamLogic.ChangeMemberRole(teamId, userId, updatedMember);
                 if (sucessfulOperation)
                     return Ok("");
                 else

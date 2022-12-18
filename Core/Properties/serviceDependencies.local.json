@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "apis1": {
-      "ignored": "True",
-      "type": "apis"
-    },
     "mssql1": {
       "secretStore": "LocalSecretsFile",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/stmsdbserver/databases/stmsDb",

@@ -8,8 +8,8 @@
       "dynamicId": null
     },
     "apis1": {
-      "apiEndpoint": "https://sportly-api.azure-api.net/",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/Sportly-Api/apis/SporltyAPI",
+      "apiEndpoint": "https://sportly-api.azure-api.net/sportly",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/Sportly-Api/apis/Sportly-API",
       "type": "apis.azure"
     }
   }

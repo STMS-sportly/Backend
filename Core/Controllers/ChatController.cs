@@ -6,16 +6,16 @@ namespace Core.Controllers
     [Route("chat/[action]")]
     public class ChatController : Controller
     {
-        [HttpPost]
-        public ActionResult SendMessage()
-        {
-            return Ok();
-        }
+        //[HttpPost]
+        //public ActionResult SendMessage()
+        //{
+        //    return Ok();
+        //}
 
-        [HttpGet]
-        public ActionResult GetMessages()
-        {
-            return Ok();
-        }
+        //[HttpGet]
+        //public ActionResult GetMessages()
+        //{
+        //    return Ok();
+        //}
     }
 }
