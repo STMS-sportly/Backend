@@ -45,6 +45,7 @@ namespace Logic.BLL
                 });
             }
 
+            res.OrderBy(e => e.Date);
             return res;
         }
 
@@ -64,6 +65,7 @@ namespace Logic.BLL
                 });
             }
 
+            res.OrderBy(e => e.Date);
             return res;
         }
 
