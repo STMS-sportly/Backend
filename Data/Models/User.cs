@@ -25,6 +25,7 @@ namespace Data.Models
         [MaxLength(128)]
         public string? PhotoUrl { get; set; }
 
+        public virtual List<UserTeam> UserTeams { get; set; }
     }
 
 }

@@ -22,6 +22,9 @@ namespace Data.Models
         [MaxLength(100)]
         public string? OrganizationName { get; set; }
 
+        public virtual List<UserTeam> TeamUsers { get; set;}
+        public virtual TeamCode TeamCode { get; set; }
+        public virtual List<Event> TeamEvents { get; set;  }
     }
 
 }

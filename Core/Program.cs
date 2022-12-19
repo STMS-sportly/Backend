@@ -1,4 +1,6 @@
 using Data.DataAccess;
+using Data.Interfaces;
+using Data.Repositories;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ builder.Services.AddDbContext<StmsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StmsCs"));
 });
 
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

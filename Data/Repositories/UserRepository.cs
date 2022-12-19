@@ -61,6 +61,8 @@ namespace Data.Repositories
             userContext.SaveChanges();
         }
 
+        #region Dispose
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -77,5 +79,7 @@ namespace Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }
