@@ -44,7 +44,7 @@ namespace Data.Repositories
 
         public List<Event> GetMonthEvents(int teamId, DateTime date)
         {
-            var res = scheduleContext.Events.Where(e => e.EventDate.Month == date.Month && e.TeamId == teamId).ToList();
+            var res = scheduleContext.Events.Where(e => e.EventDate.Month == date.Month && e.EventDate.Year == date.Year && e.TeamId == teamId).ToList();
             return res;
         }
 
@@ -54,7 +54,7 @@ namespace Data.Repositories
                        join t in scheduleContext.Teams on e.TeamId equals t.TeamId
                        join u in scheduleContext.UsersTeams on e.TeamId equals u.TeamId
                        join us in scheduleContext.Users on u.UserId equals us.UserId
-                       where e.TeamId == teamId && us.Email == email && e.EventDate.Day == date.Day
+                       where e.TeamId == teamId && us.Email == email && e.EventDate.Day == date.Day && e.EventDate.Year == date.Year && e.EventDate.Month == date.Month
                        select new
                        {
                            Event = new Event

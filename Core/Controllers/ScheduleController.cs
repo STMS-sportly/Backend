@@ -102,5 +102,11 @@ namespace Core.Controllers
                 return BadRequest(AddLog(ex));
             }
         }
+
+        //[]
+        //public async Task<ActionResult> UpdateEvent([FromHeader] string idToken, [FromRoute] int eventId, UpdatedEventDTO updatedEvent)
+        //{
+        //    return Ok();
+        //}
     }
 }
