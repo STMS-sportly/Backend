@@ -74,5 +74,33 @@ namespace Core.Controllers
                 return BadRequest(AddLog(ex));
             }
         }
+
+        [HttpDelete("{teamId}/{eventId}")]
+        public async Task<ActionResult> RemoveEvent([FromHeader] string idToken, [FromRoute] int teamId, [FromRoute]int eventId)
+        {
+            try
+            {
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
+                var logic = new ScheduleLogic(Context);
+                bool success = logic.RemoveEvent(eventId, teamId);
+
+                if (success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Can not remove Event");
+                }
+            }
+            catch (FirebaseAuthException ex)
+            {
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
+            }
+        }
     }
 }

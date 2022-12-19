@@ -1,5 +1,4 @@
 ﻿using Data.DataAccess;
-using Data.DataTO;
 using Data.Interfaces;
 using Data.Models;
 using System;
@@ -75,6 +74,24 @@ namespace Data.Repositories
             }
 
             return resDic;
+        }
+
+        public bool RemoveEvent(int eventId, int teamId)
+        {
+            try
+            {
+                var tmp = scheduleContext.Events.Where(u => u.EventId == eventId && u.TeamId == teamId).FirstOrDefault();
+                if (tmp == null)
+                    return false;
+
+                scheduleContext.Events.Remove(tmp);
+                Save();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

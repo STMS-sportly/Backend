@@ -66,5 +66,10 @@ namespace Logic.BLL
 
             return res;
         }
+
+        public bool RemoveEvent(int eventId, int teamId)
+        {
+            return scheduleRepo.RemoveEvent(eventId, teamId);
+        }
     }
 }
