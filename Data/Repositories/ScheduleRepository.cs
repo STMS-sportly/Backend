@@ -49,22 +49,32 @@ namespace Data.Repositories
             return res;
         }
 
-        public List<DayEventTO> GetDayEvents(string email, int teamId, DateTime date)
+        public Dictionary<Event, bool> GetDayEvents(string email, int teamId, DateTime date)
         {
             var res = (from e in scheduleContext.Events
-                        join t in scheduleContext.Teams on e.TeamId equals t.TeamId
-                        join u in scheduleContext.UsersTeams on e.TeamId equals u.TeamId
-                        join us in scheduleContext.Users on u.UserId equals us.UserId
-                        where e.TeamId == teamId && us.Email == email && e.EventDate.Day == date.Day
-                        select new DayEventTO
-                        {
-                            EventId = e.EventId,
-                            Date = e.EventDate,
-                            Description = e.Description,
-                            Title = e.EventName,
-                            Editable = ((e.CreatorId == us.UserId) || (u.UserType == 0 || u.UserType == 1))
-                        }).ToList();
-            return res;
+                       join t in scheduleContext.Teams on e.TeamId equals t.TeamId
+                       join u in scheduleContext.UsersTeams on e.TeamId equals u.TeamId
+                       join us in scheduleContext.Users on u.UserId equals us.UserId
+                       where e.TeamId == teamId && us.Email == email && e.EventDate.Day == date.Day
+                       select new
+                       {
+                           Event = new Event
+                           {
+                               EventId = e.EventId,
+                               EventDate = e.EventDate,
+                               Description = e.Description,
+                               EventName = e.EventName
+                           },
+                           Editable = (e.CreatorId == us.UserId) || (u.UserType == 0 || u.UserType == 1)
+                       }).ToList();
+
+            var resDic = new Dictionary<Event, bool>();
+            foreach ( var e in res)
+            {
+                resDic.Add(e.Event, e.Editable);
+            }
+
+            return resDic;
         }
     }
 }

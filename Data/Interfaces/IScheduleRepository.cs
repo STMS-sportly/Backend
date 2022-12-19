@@ -1,10 +1,4 @@
-﻿using Data.DataTO;
-using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data.Models;
 
 namespace Data.Interfaces
 {
@@ -12,6 +6,6 @@ namespace Data.Interfaces
     {
         bool CreateEvent(string email, Event t);
         List<Event> GetMonthEvents(int teamId, DateTime date);
-        List<DayEventTO> GetDayEvents(string email, int teamId, DateTime date);
+        Dictionary<Event, bool> GetDayEvents(string email, int teamId, DateTime date);
     }
 }

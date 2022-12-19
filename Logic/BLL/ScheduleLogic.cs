@@ -56,10 +56,11 @@ namespace Logic.BLL
             {
                 res.Add(new GetDayEventsDTO()
                 {
-                    Date = item.Date,
-                    Title = item.Title,
-                    Description = item.Description,
-                    Editable = item.Editable
+                    EventId = item.Key.EventId,
+                    Date = item.Key.EventDate,
+                    Title = item.Key.EventName,
+                    Description = item.Key.Description,
+                    Editable = item.Value
                 });
             }
 
