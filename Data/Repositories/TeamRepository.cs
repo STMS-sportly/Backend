@@ -91,16 +91,6 @@ namespace Data.Repositories
             return false;
         }
 
-        public void Save()
-        {
-            teamContext.SaveChanges();
-        }
-
-        public bool IsAdmin(int userType)
-        {
-            return (userType == 0 || userType == 1);
-        }
-
         public TeamCode GetTeamCode(int teamId)
         {
             var code = teamContext.TeamCodes.Where(e => e.TeamId == teamId).FirstOrDefault();
@@ -310,6 +300,13 @@ namespace Data.Repositories
             return false;
         }
 
+        public void Save()
+        {
+            teamContext.SaveChanges();
+        }
+
+        #region Dispose 
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -326,5 +323,6 @@ namespace Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

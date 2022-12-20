@@ -46,4 +46,4 @@ namespace Logic.BLL
             return userRepo.UserExists(user.Email);
         }
     }
-}
+}   

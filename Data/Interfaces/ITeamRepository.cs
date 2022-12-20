@@ -15,7 +15,6 @@ namespace Data.Interfaces
         Team GetUserTeamById(int teamId);
         int GetNumberOfTeamMembers(int teamId);
         UserTeam GetUserTeam(string email, int teamId);
-        bool IsAdmin(int userType);
         List<User> GetMembers(int teamId);
         TeamCode GetTeamCode(int teamId);
         bool JoinTeam(string email, string codeTeam);
