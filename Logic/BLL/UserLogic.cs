@@ -18,7 +18,7 @@ namespace Logic.BLL
         public void AddUser(UserRecord user)
         {
             var name = user.DisplayName.Split(' ');
-            var newUser = new Model.User()
+            var newUser = new User()
             {
                 Email = user.Email,
                 Firstname = name[0],

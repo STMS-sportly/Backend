@@ -93,5 +93,26 @@ namespace Data.Repositories
                 return false;
             }
         }
+
+        public bool UpdatedEvent(int eventId, int teamId, Event updatedEvent)
+        {
+            try
+            {
+                var tmp = scheduleContext.Events.Where(u => u.EventId == eventId && u.TeamId == teamId).FirstOrDefault();
+                if (tmp == null)
+                    return false;
+
+                tmp.EventDate = updatedEvent.EventDate;
+                tmp.EventName = updatedEvent.EventName;
+                tmp.Description= updatedEvent.Description;
+
+                Save();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

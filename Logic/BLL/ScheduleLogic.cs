@@ -3,6 +3,7 @@ using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
 using Logic.ALL.DTOs;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,19 @@ namespace Logic.BLL
         public bool RemoveEvent(int eventId, int teamId)
         {
             return scheduleRepo.RemoveEvent(eventId, teamId);
+        }
+
+        public bool UpdatedEvent(int eventId, int teamId, UpdatedEventDTO updatedEvent)
+        {
+            var newEvent = new Event()
+            {
+                EventId = eventId,
+                EventName = updatedEvent.Title,
+                Description = updatedEvent.Description,
+                EventDate = updatedEvent.eventDate,
+                TeamId = teamId
+            };
+            return scheduleRepo.UpdatedEvent(eventId, teamId, newEvent);
         }
     }
 }

@@ -103,10 +103,33 @@ namespace Core.Controllers
             }
         }
 
-        //[]
-        //public async Task<ActionResult> UpdateEvent([FromHeader] string idToken, [FromRoute] int eventId, UpdatedEventDTO updatedEvent)
-        //{
-        //    return Ok();
-        //}
+        [HttpPut("{teamId}/{eventId}")]
+        public async Task<ActionResult> UpdatedEvent([FromHeader] string idToken, [FromRoute] int teamId,[FromRoute] int eventId, UpdatedEventDTO updatedEvent)
+        {
+
+            try
+            {
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
+                var logic = new ScheduleLogic(Context);
+                bool success = logic.UpdatedEvent(eventId, teamId, updatedEvent);
+
+                if (success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Can not update Event");
+                }
+            }
+            catch (FirebaseAuthException ex)
+            {
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
+            }
+        }
     }
 }
