@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.ALL.DTOs
+namespace Data.DTOs
 {
-    public class CreateEventDTO
+    public class UpdatedEventDTO
     {
-        public DateTime eventDate { get; set; }
+        public DateTime Date { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
     }

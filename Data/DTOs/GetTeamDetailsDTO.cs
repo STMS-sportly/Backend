@@ -1,4 +1,4 @@
-﻿namespace Logic.ALL.DTOs
+﻿namespace Data.DTOs
 {
     public class GetTeamDetailsDTO
     {

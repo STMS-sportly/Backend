@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.ALL.DTOs
+namespace Data.DTOs
 {
-    public class UpdatedMemberRoleDTO
+    public class JoinTeamDTO
     {
-        public string NewRole { get; set; }
+        public string Code { get; set; }
     }
 }

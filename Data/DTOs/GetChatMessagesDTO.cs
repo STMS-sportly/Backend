@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.ALL.DTOs
+namespace Data.DTOs
 {
     public class GetChatMessagesDTO
     {
-        public List<MessageDTO> Messages { get; set; }
+        public List<MessageDTO> Messages { get; set; } = new List<MessageDTO>();
     }
 
     public class MessageDTO
