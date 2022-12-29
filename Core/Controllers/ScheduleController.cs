@@ -104,15 +104,16 @@ namespace Core.Controllers
         }
 
         [HttpPut("{teamId}/{eventId}")]
-        public async Task<ActionResult> UpdatedEvent([FromHeader] string idToken, [FromRoute] int teamId,[FromRoute] int eventId, UpdatedEventDTO updatedEvent)
+        public async Task<ActionResult> UpdateEvent([FromHeader] string idToken, [FromRoute] int teamId,[FromRoute] int eventId, UpdatedEventDTO updatedEvent)
         {
+            if (updatedEvent.Date == default || updatedEvent.Title == null)
+                throw new Exception("Date and Title are requeired !");
 
             try
             {
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
                 bool success = logic.UpdatedEvent(eventId, teamId, updatedEvent);
-
                 if (success)
                 {
                     return Ok();

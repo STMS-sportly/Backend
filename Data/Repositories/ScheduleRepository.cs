@@ -102,9 +102,10 @@ namespace Data.Repositories
                 if (tmp == null)
                     return false;
 
-                tmp.EventDate = updatedEvent.EventDate;
-                tmp.EventName = updatedEvent.EventName;
-                tmp.Description= updatedEvent.Description;
+
+                tmp.EventDate = updatedEvent.EventDate == default ? tmp.EventDate : updatedEvent.EventDate;
+                tmp.EventName = updatedEvent.EventName ?? tmp.EventName;
+                tmp.Description= updatedEvent.Description ?? tmp.Description;
 
                 Save();
                 return true;

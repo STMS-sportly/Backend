@@ -41,6 +41,7 @@ namespace Logic.BLL
             {
                 res.Add(new GetMonthEventsDTO()
                 {
+                    EventId= item.EventId,
                     Date = item.EventDate,
                     Title = item.EventName
                 });
@@ -82,7 +83,7 @@ namespace Logic.BLL
                 EventId = eventId,
                 EventName = updatedEvent.Title,
                 Description = updatedEvent.Description,
-                EventDate = updatedEvent.eventDate,
+                EventDate = updatedEvent.Date,
                 TeamId = teamId
             };
             return scheduleRepo.UpdatedEvent(eventId, teamId, newEvent);
