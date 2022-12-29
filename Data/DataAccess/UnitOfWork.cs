@@ -20,12 +20,14 @@ namespace Data.DataAccess
             Teams = new TeamRepository(_appContext);
             Logs = new LogRepository(_appContext);
             Schedule = new ScheduleRepository(_appContext);
+            Chat = new ChatRepository(_appContext);
         }
 
         public IUserRepository Users { get; set; }
         public ITeamRepository Teams { get; set; }
         public ILogRepository Logs { get; set; }
         public IScheduleRepository Schedule { get; set; }
+        public IChatRepository Chat { get; set; }
 
         public int Complete()
         {

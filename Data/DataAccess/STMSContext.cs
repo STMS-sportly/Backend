@@ -33,7 +33,7 @@ namespace Data.DataAccess
             modelBuilder.Entity<UserTeam>().HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
 
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<GroupChat>().HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
+            modelBuilder.Entity<GroupChat>().HasKey(nameof(GroupChat.MessageId), nameof(GroupChat.TeamId), nameof(GroupChat.UserId));
         }
 
     }

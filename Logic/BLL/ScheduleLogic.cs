@@ -1,8 +1,8 @@
 ﻿using Data.DataAccess;
+using Data.DTOs;
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
-using Logic.ALL.DTOs;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

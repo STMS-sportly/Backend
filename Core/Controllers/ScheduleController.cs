@@ -1,5 +1,5 @@
-﻿using FirebaseAdmin.Auth;
-using Logic.ALL.DTOs;
+﻿using Data.DTOs;
+using FirebaseAdmin.Auth;
 using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;

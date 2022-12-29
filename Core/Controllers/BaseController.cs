@@ -1,5 +1,4 @@
 ﻿using Data.DataAccess;
-using FirebaseAdmin.Auth;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
 

@@ -15,15 +15,16 @@ namespace Data.Migrations
                 name: "GroupChats",
                 columns: table => new
                 {
+                    MessageId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TeamId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    MessageId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SendDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupChats", x => new { x.TeamId, x.UserId });
+                    table.PrimaryKey("PK_GroupChats", x => new { x.MessageId, x.TeamId, x.UserId });
                     table.ForeignKey(
                         name: "FK_GroupChats_Teams_TeamId",
                         column: x => x.TeamId,
@@ -37,6 +38,11 @@ namespace Data.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupChats_TeamId",
+                table: "GroupChats",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupChats_UserId",

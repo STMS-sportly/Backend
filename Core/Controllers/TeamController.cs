@@ -1,8 +1,8 @@
-﻿using Data.Enums;
+﻿using Data.DTOs;
+using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using FirebaseAdmin.Auth;
-using Logic.ALL.DTOs;
 using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;

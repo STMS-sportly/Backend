@@ -57,6 +57,12 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.GroupChat", b =>
                 {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
+
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -67,13 +73,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("SendDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("TeamId", "UserId");
+                    b.HasKey("MessageId", "TeamId", "UserId");
+
+                    b.HasIndex("TeamId");
 
                     b.HasIndex("UserId");
 

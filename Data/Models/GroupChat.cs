@@ -11,6 +11,7 @@ namespace Data.Models
     public class GroupChat
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MessageId { get; set; }
 
         [Required]
