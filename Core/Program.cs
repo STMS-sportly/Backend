@@ -26,6 +26,8 @@ builder.Services.AddDbContext<StmsContext>(options =>
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
