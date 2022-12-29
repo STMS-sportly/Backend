@@ -25,10 +25,15 @@ namespace Data.DataAccess
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<GroupChat> GroupChats { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserTeam>().HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<GroupChat>().HasKey(nameof(UserTeam.TeamId), nameof(UserTeam.UserId));
         }
 
     }
