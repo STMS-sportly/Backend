@@ -58,6 +58,7 @@ namespace Data.Repositories
         {
             try
             {
+                var user = chatContext.Users.Where(e => e.Email == email).First();
                 var result = new GetChatMessagesDTO();
                 result.Messages = await (from t in chatContext.GroupChats
                           join t2 in chatContext.Users on t.UserId equals t2.UserId
@@ -66,10 +67,11 @@ namespace Data.Repositories
                           {
                               MessageId = t.MessageId,
                               Message = t.Message,
+                              UserId = t.UserId,
                               FirstName = t2.Firstname,
                               LastName = t2.Surname,
                               MessageTime = t.SendDate
-                          }).ToListAsync<MessageDTO>();
+                          }).ToListAsync();
                 return result;
             }
             catch
