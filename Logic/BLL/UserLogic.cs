@@ -1,4 +1,5 @@
 ﻿using Data.DataAccess;
+using Data.DTOs;
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
@@ -44,6 +45,18 @@ namespace Logic.BLL
         public bool UserExist(UserRecord user)
         {
             return userRepo.UserExists(user.Email);
+        }
+
+        public GetUserDataDTO GetUserData(string email)
+        {
+            var userData = userRepo.GetUserByEmail(email);
+            var result = new GetUserDataDTO()
+            {
+                FirstName = userData.Firstname,
+                LastName = userData.Surname,
+                UserId = userData.UserId,
+            };
+            return result;
         }
     }
 }   
