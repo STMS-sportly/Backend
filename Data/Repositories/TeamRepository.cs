@@ -235,6 +235,12 @@ namespace Data.Repositories
                                 Save();
                                 return true;
                             }
+                            else
+                            {
+                                teamContext.UsersTeams.Remove(user);
+                                var team = teamContext.Teams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                                teamContext.Teams.Remove(team);
+                            }
                         }
                     }
                 }
@@ -257,6 +263,12 @@ namespace Data.Repositories
                             teamContext.UsersTeams.Update(newAdmin);
                             Save();
                             return true;
+                        }
+                        else
+                        {
+                            teamContext.UsersTeams.Remove(user);
+                            var team = teamContext.Teams.Where(e => e.TeamId == teamId).FirstOrDefault();
+                            teamContext.Teams.Remove(team);
                         }
                     }
                 }
