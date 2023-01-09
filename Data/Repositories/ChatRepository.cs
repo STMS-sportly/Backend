@@ -62,6 +62,7 @@ namespace Data.Repositories
                 var result = new GetChatMessagesDTO();
                 result.Messages = await (from t in chatContext.GroupChats
                           join t2 in chatContext.Users on t.UserId equals t2.UserId
+                          where t.TeamId == teamId
                           orderby t.SendDate
                           select new MessageDTO
                           {
