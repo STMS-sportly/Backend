@@ -19,11 +19,11 @@ namespace Logic.BLL
             logsRepo = new LogRepository(context);
         }
 
-        public void AddLog(string errorMessage)
+        public void AddLog(string errorMessage, string? source)
         {
             var log = new Log()
             {
-                Message = errorMessage,
+                Message = errorMessage + "\t" + (source ?? ""),
                 LogTime = DateTime.Now
             };
             logsRepo.InsertLog(log);

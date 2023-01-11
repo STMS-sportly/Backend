@@ -13,7 +13,7 @@ namespace Core.Controllers
         protected string AddLog<T>(T ex) where T : Exception
         {
             var logs = new LogsLogic(Context);
-            logs.AddLog(ex.Message);
+            logs.AddLog(ex.Message, ex.Source);
             return ex.Message;
         }
     }
