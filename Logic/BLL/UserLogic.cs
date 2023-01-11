@@ -22,8 +22,8 @@ namespace Logic.BLL
             var newUser = new User()
             {
                 Email = user.Email,
-                Firstname = name[0],
-                Surname = name[1],
+                Firstname = name[0] ?? "NoName",
+                Surname = name[1] ?? "NoSurname",
                 PhoneNumber = user.PhoneNumber,
                 PhotoUrl = user.PhotoUrl
             };
