@@ -194,6 +194,12 @@ namespace Data.Repositories
 
         public bool LeaveTeam(string email, int teamId)
         {
+            int teamNumber = teamContext.UsersTeams.Where(e => e.TeamId == teamId).Count();
+            if (teamNumber == 1)
+            {
+                DeleteTeam(teamId);
+                return true;
+            }
 
             var user = teamContext.UsersTeams.Where(e => e.User.Email == email && e.TeamId == teamId).FirstOrDefault();
             if (user != null)
