@@ -3,7 +3,6 @@ using FirebaseAdmin.Auth;
 using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Core.Controllers
 {
@@ -142,7 +141,7 @@ namespace Core.Controllers
                 var user = await FirebaseAuthorization.FirebaseUser(idToken);
                 var logic = new ScheduleLogic(Context);
                 var events = logic.GetAllTeamEvents(teamId);
-                return Json(new { Events = events });
+                return Json(new { Events = events.TeamEvents.ToArray() });
             }
             catch (FirebaseAuthException ex)
             {
