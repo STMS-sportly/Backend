@@ -88,5 +88,24 @@ namespace Logic.BLL
             };
             return scheduleRepo.UpdatedEvent(eventId, teamId, newEvent);
         }
+
+        public GetAllTeamEventsDTO GetAllTeamEvents(int teamId)
+        {
+            var res = new GetAllTeamEventsDTO();
+            var events = scheduleRepo.GetAllTeamEvents(teamId);
+            foreach (var item in events)
+            {
+                res.TeamEvents.Add(new GetDayEventsDTO()
+                {
+                    EventId = item.EventId,
+                    Date = item.EventDate,
+                    Title = item.EventName,
+                    Description = item.Description
+                });
+            }
+
+            res.TeamEvents = res.TeamEvents.OrderBy(e => e.Date).ToList();
+            return res;
+        }
     }
 }

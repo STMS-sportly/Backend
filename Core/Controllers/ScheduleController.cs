@@ -3,6 +3,7 @@ using FirebaseAdmin.Auth;
 using Logic.ALL.UserAuthorization;
 using Logic.BLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Controllers
 {
@@ -122,6 +123,26 @@ namespace Core.Controllers
                 {
                     return BadRequest("Can not update Event");
                 }
+            }
+            catch (FirebaseAuthException ex)
+            {
+                return Unauthorized(AddLog(ex));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AddLog(ex));
+            }
+        }
+
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult> GetAllTeamEvents([FromHeader] string idToken, [FromRoute] int teamId)
+        {
+            try
+            {
+                var user = await FirebaseAuthorization.FirebaseUser(idToken);
+                var logic = new ScheduleLogic(Context);
+                var events = logic.GetAllTeamEvents(teamId);
+                return Json(new { Events = events });
             }
             catch (FirebaseAuthException ex)
             {

@@ -9,5 +9,6 @@ namespace Data.Interfaces
         Dictionary<Event, bool> GetDayEvents(string email, int teamId, DateTime date);
         bool RemoveEvent(int eventId, int teamId);
         bool UpdatedEvent(int eventId, int teamId, Event updatedEvent);
+        List<Event> GetAllTeamEvents(int teamId);
     }
 }

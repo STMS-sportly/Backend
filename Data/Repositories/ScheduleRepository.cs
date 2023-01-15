@@ -115,5 +115,10 @@ namespace Data.Repositories
                 return false;
             }
         }
+
+        public List<Event> GetAllTeamEvents(int teamId)
+        {
+            return scheduleContext.Events.Where(e => e.TeamId == teamId).ToList();
+        }
     }
 }
